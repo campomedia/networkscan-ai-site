@@ -1,1 +1,2 @@
-/blog/* /blog/:splat 200
+# Cloudflare Pages _redirects
+# No rewrites needed — Astro static output generates proper index.html per route

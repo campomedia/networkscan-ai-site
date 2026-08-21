@@ -1,6 +1,8 @@
+name = "networkscan-ai"
+pages_build_output_dir = "dist"
+
 [build]
 command = "pnpm run build"
-destination = "dist"
 
 [build.environment]
 NODE_VERSION = "20.5.1"

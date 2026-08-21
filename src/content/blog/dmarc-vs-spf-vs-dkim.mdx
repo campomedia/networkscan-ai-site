@@ -1,0 +1,161 @@
+---
+title: "DMARC vs SPF vs DKIM: Which Email Security Records Does Your Business Need?"
+description: "SPF, DKIM, and DMARC each do a different job protecting your email. Most small businesses need all three — here's what each one does and how they work together."
+publishedDate: "2026-08-21"
+author: "Marcus Webb"
+authorRole: "Network Security Analyst"
+tags: ["DMARC VS SPF VS DKIM", "EMAIL AUTHENTICATION SMB", "EMAIL SECURITY COMPARISON"]
+schema:
+  type: Review
+faq:
+  - question: "Which is more important: DMARC, SPF, or DKIM?"
+    answer: "All three are necessary and they work as a system, not independently. SPF lists which servers are authorized to send your email. DKIM cryptographically signs each message to prove it has not been altered. DMARC ties both together by telling receiving mail servers what to do when either check fails. Implementing only one or two of the three leaves exploitable gaps — attackers can pass SPF while still spoofing your From address, for example, if DMARC is not in place to enforce alignment."
+  - question: "Can I have DMARC without DKIM?"
+    answer: "Yes, technically — DMARC only requires that a message passes either SPF or DKIM, not both. However, operating with DMARC but without DKIM is fragile. SPF breaks when email is forwarded (because the forwarding server's IP is not on your authorized list), causing legitimate email to fail DMARC. DKIM signatures survive forwarding. Running both SPF and DKIM gives DMARC two independent authentication paths, which significantly reduces the chance of legitimate mail being blocked."
+  - question: "How do I know which email security records my business already has?"
+    answer: "You can check all three using free tools. For SPF: run dig TXT yourdomain.com and look for a record starting with v=spf1. For DMARC: run dig TXT _dmarc.yourdomain.com or use mxtoolbox.com/DMARC.aspx. For DKIM: use mxtoolbox.com/dkim.aspx with your domain and selector. A full network security audit will check all three as part of the email security review."
+  - question: "What happens if an email fails SPF but passes DKIM?"
+    answer: "If DMARC is in place, a message that fails SPF but passes DKIM will pass DMARC — assuming the DKIM signature domain aligns with the From address. DMARC is an OR logic: pass either SPF or DKIM (with proper alignment) and the message passes DMARC. This is by design, because SPF is known to break during email forwarding. DKIM provides the fallback path."
+  - question: "Does having all three records guarantee I cannot be spoofed?"
+    answer: "Having SPF, DKIM, and DMARC at p=reject provides very strong protection against direct domain spoofing. It prevents attackers from sending mail that appears to come from your exact domain. However, it does not protect against look-alike domains (such as mainsteetdental.com with a missing letter) or cousin domains (yourbusiness-billing.com). Those require separate monitoring and defensive domain registration."
+---
+
+When it comes to email security, three acronyms come up constantly: SPF, DKIM, and DMARC. They are related, they work together, and they are often confused with each other. More importantly, most small businesses are missing at least one — and sometimes all three.
+
+Here is a plain-English breakdown of what each record does, how they interact, and why your business likely needs all of them.
+
+## TL;DR
+
+- SPF (Sender Policy Framework) is a DNS record that lists which servers are authorized to send email for your domain — it verifies the sending server, not the message content.
+- DKIM (DomainKeys Identified Mail) adds a cryptographic signature to each outgoing email, allowing the recipient's server to verify the message was not altered in transit and came from an authorized sender.
+- DMARC (Domain-based Message Authentication, Reporting, and Conformance) ties SPF and DKIM together and tells receiving mail servers what to do when either check fails — nothing, quarantine the message, or reject it.
+- All three records are needed: SPF without DMARC has no enforcement, DKIM without DMARC has no enforcement, and DMARC without SPF or DKIM has nothing to authenticate against.
+- SPF fails when email is forwarded (the forwarding server is not on your authorized list), which is why DKIM matters — DKIM signatures survive forwarding.
+- The correct implementation order is: set up SPF first, then DKIM, then add DMARC starting at p=none, then tighten to p=reject after confirming all legitimate mail passes.
+- Most small businesses have SPF but are missing DKIM and DMARC — leaving them partially but not fully protected.
+- A professional email security audit checks all three records and reports on any gaps.
+
+## What does SPF do?
+
+SPF — Sender Policy Framework — is the oldest of the three standards and the most widely deployed. An SPF record is a DNS TXT record published at your domain that lists every IP address and mail service authorized to send email on your behalf.
+
+When a receiving mail server gets a message claiming to be from `youroffice.com`, it checks the SPF record at `youroffice.com` in DNS. If the sending server's IP address is on the list, SPF passes. If not, SPF fails.
+
+An SPF record for a Google Workspace user looks like this:
+
+```
+v=spf1 include:_spf.google.com ~all
+```
+
+The `include:_spf.google.com` delegates to Google's list of authorized sending IPs. The `~all` at the end means "soft fail" for anything not on the list — it is a recommendation to treat the mail with suspicion rather than a hard block.
+
+**What SPF does not do:** SPF verifies the envelope sender — the technical "return path" address used for bounce handling — not the visible "From" address that your recipient sees. Attackers can exploit this: they can send mail from a server that passes SPF for their own domain while putting your address in the visible From field. Without DMARC to enforce alignment, this attack works.
+
+**SPF's Achilles heel:** SPF breaks during email forwarding. When a server forwards your email to another address, the forwarding server's IP is not on your SPF list. SPF fails on the forwarded copy, even though the original email was completely legitimate. This is one reason DKIM exists.
+
+## What does DKIM do?
+
+DKIM — DomainKeys Identified Mail — takes a different approach. Instead of checking which server sent the message, DKIM checks whether the message itself is authentic.
+
+When your email server sends a message, DKIM adds a cryptographic signature to the email headers. This signature is generated using a private key that only your mail server knows. The corresponding public key is published in your DNS, under a subdomain called a "selector" — for example, `google._domainkey.youroffice.com` for Google Workspace.
+
+When a receiving server gets the message, it looks up your public key in DNS, and uses it to verify the signature. A valid signature means:
+
+1. The message was sent by someone who controls your private key (i.e., your legitimate mail server)
+2. The message was not altered in transit — any change to the message body or headers after signing invalidates the signature
+
+**Why DKIM survives forwarding:** Unlike SPF, which checks the sending IP, DKIM checks the signature embedded in the message. When email is forwarded, the signature travels with the message. As long as the message body is not modified during forwarding, DKIM passes — even though the forwarding server is not on your SPF list.
+
+**What DKIM does not do:** DKIM alone, without DMARC, has no enforcement mechanism. A message can have a valid DKIM signature from an attacker's own domain while displaying your address in the From field. The signature is technically valid — it just does not belong to your domain. DMARC's alignment requirement is what catches this.
+
+## What does DMARC do?
+
+DMARC — Domain-based Message Authentication, Reporting, and Conformance — is the enforcement and policy layer. It does three things:
+
+**1. Adds an alignment requirement.** DMARC requires that either SPF or DKIM not only passes, but also aligns with the domain in the visible From address. This closes the attack described above: even if an attacker's mail passes SPF for their own domain, DMARC alignment fails because the authenticated domain does not match the From domain the recipient sees.
+
+**2. Defines a policy.** The DMARC record specifies what to do when a message fails: `p=none` (monitor, take no action), `p=quarantine` (send to spam), or `p=reject` (block the message). Without DMARC, mail servers handle authentication failures at their own discretion — which often means delivering the message anyway.
+
+**3. Enables reporting.** DMARC aggregate reports are sent to the address you specify in your DNS record. These reports show, for every message processed by a major mail provider, whether it passed or failed SPF and DKIM. This visibility is essential for auditing your email infrastructure and catching configuration problems before they cause mail delivery issues.
+
+## How do the three records interact?
+
+Think of the three records as layers of a security system:
+
+| Record | What it checks | Enforcement |
+|--------|---------------|-------------|
+| SPF | Sending server IP | None without DMARC |
+| DKIM | Message signature | None without DMARC |
+| DMARC | Alignment of both + policy | Yes — defines what happens on failure |
+
+For a message to pass DMARC, it must:
+- Pass SPF **and** the SPF-authenticated domain must align with the From domain, **OR**
+- Pass DKIM **and** the DKIM-signing domain must align with the From domain
+
+DMARC is OR logic — passing either one is enough. But alignment is required. This is why you need both records in place: SPF breaks during forwarding, so you need DKIM as a fallback path.
+
+For practical guidance on checking whether all three are in place for your domain, see [How to Check Your DMARC Record: A Step-by-Step Guide for Business Owners](/blog/how-to-check-dmarc).
+
+## What are the most common misconfigurations?
+
+**SPF record with too many lookups.** SPF has a limit of 10 DNS lookups. Complex SPF records that chain multiple `include:` statements can exceed this limit, causing legitimate mail to fail SPF. This is a common problem for businesses that use multiple email services (marketing platform, CRM, scheduling system, etc.).
+
+**DKIM with a short key length.** DKIM keys should be at least 2048 bits. Keys of 1024 bits are considered weak by modern standards. Some older mail systems still generate 1024-bit keys by default.
+
+**DMARC at p=none with no reporting address.** A DMARC record at `p=none` with no `rua=` address provides neither enforcement nor visibility. You get none of the benefits. Always include a reporting address even during the monitoring phase.
+
+**Missing DKIM for third-party senders.** Many businesses set up DKIM for their primary mail provider (Google Workspace or Microsoft 365) but forget to configure it for other services that send email on their behalf — marketing automation, appointment reminders, invoice systems. Each of these services needs its own DKIM key configured. If DMARC is at `p=reject`, mail from unconfigured services will be blocked.
+
+**Moving to p=reject too fast.** Jumping to `p=reject` without first auditing aggregate reports at `p=none` is the most common mistake that causes legitimate mail to be blocked. Always run the monitoring phase for at least 2-4 weeks.
+
+## What is the correct implementation order?
+
+1. **Start with SPF.** Add a TXT record at your domain listing all authorized sending services. Verify it with `dig TXT yourdomain.com` or MXToolbox.
+
+2. **Set up DKIM.** Enable DKIM signing in your mail provider (Google Workspace, Microsoft 365, etc.) and publish the public key in DNS. Also configure DKIM for any third-party services that send mail on your behalf.
+
+3. **Add DMARC at p=none.** Create a TXT record at `_dmarc.yourdomain.com` with `p=none` and a `rua=` address to receive aggregate reports.
+
+4. **Review reports.** After 2-4 weeks, review the aggregate reports to confirm all legitimate mail sources are passing authentication.
+
+5. **Move to p=quarantine.** Once you are confident, change the policy to `p=quarantine`. Monitor for another 1-2 weeks.
+
+6. **Move to p=reject.** Final step: full enforcement. Spoofed mail from your domain is blocked.
+
+The full context on why this matters for small businesses specifically is in [What Is DMARC? Email Authentication for Small Business Explained](/blog/what-is-dmarc) and [DMARC for Small Business: Why 70% of SMBs Are Vulnerable to Email Spoofing](/blog/dmarc-small-business).
+
+## Which email security records does your business actually need?
+
+Short answer: all three, implemented in order, with DMARC eventually at `p=reject`.
+
+If you have only SPF: you are checking sending servers but not enforcing alignment. Spoofing attacks that abuse the From field bypass SPF entirely.
+
+If you have only DKIM: you have message-level authentication but no policy enforcement and no SPF verification of sending servers.
+
+If you have SPF and DKIM but no DMARC: both authentication mechanisms are running, but there is no policy telling receiving servers what to do when they fail. The decision is left to each mail provider's discretion, which varies.
+
+If you have DMARC at `p=none` without moving to enforcement: you are collecting data but not protecting anyone.
+
+Full protection requires all three, properly configured, with DMARC at `p=reject`.
+
+## Frequently Asked Questions
+
+### Which is more important: DMARC, SPF, or DKIM?
+
+All three are necessary and they work as a system, not independently. SPF lists which servers are authorized to send your email. DKIM cryptographically signs each message to prove it has not been altered. DMARC ties both together by telling receiving mail servers what to do when either check fails. Implementing only one or two of the three leaves exploitable gaps — attackers can pass SPF while still spoofing your From address, for example, if DMARC is not in place to enforce alignment.
+
+### Can I have DMARC without DKIM?
+
+Yes, technically — DMARC only requires that a message passes either SPF or DKIM, not both. However, operating with DMARC but without DKIM is fragile. SPF breaks when email is forwarded (because the forwarding server's IP is not on your authorized list), causing legitimate email to fail DMARC. DKIM signatures survive forwarding. Running both SPF and DKIM gives DMARC two independent authentication paths, which significantly reduces the chance of legitimate mail being blocked.
+
+### How do I know which email security records my business already has?
+
+You can check all three using free tools. For SPF: run `dig TXT yourdomain.com` and look for a record starting with `v=spf1`. For DMARC: run `dig TXT _dmarc.yourdomain.com` or use mxtoolbox.com/DMARC.aspx. For DKIM: use mxtoolbox.com/dkim.aspx with your domain and selector. A full network security audit will check all three as part of the email security review.
+
+### What happens if an email fails SPF but passes DKIM?
+
+If DMARC is in place, a message that fails SPF but passes DKIM will pass DMARC — assuming the DKIM signature domain aligns with the From address. DMARC is OR logic: pass either SPF or DKIM (with proper alignment) and the message passes DMARC. This is by design, because SPF is known to break during email forwarding. DKIM provides the fallback path.
+
+### Does having all three records guarantee I cannot be spoofed?
+
+Having SPF, DKIM, and DMARC at `p=reject` provides very strong protection against direct domain spoofing. It prevents attackers from sending mail that appears to come from your exact domain. However, it does not protect against look-alike domains (such as `mainsteetdental.com` with a missing letter) or cousin domains (`yourbusiness-billing.com`). Those require separate monitoring and defensive domain registration.

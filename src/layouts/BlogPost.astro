@@ -1,0 +1,713 @@
+---
+import Base from './Base.astro';
+import type { CollectionEntry } from 'astro:content';
+
+export interface Props {
+  post: CollectionEntry<'blog'>;
+  wordCount: number;
+  relatedPosts: CollectionEntry<'blog'>[];
+}
+
+const { post, wordCount, relatedPosts } = Astro.props;
+const { title, description, publishedDate, updatedDate, author, authorRole, tags, faq } = post.data;
+
+const readingTime = Math.ceil(wordCount / 238);
+const publishDate = new Date(publishedDate);
+const formattedDate = publishDate.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+
+const blogPostingSchema = {
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": title,
+  "description": description,
+  "author": {
+    "@type": "Person",
+    "name": author,
+    "jobTitle": authorRole
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "NetworkScan.AI",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://networkscan.ai/networkscan-mark.png"
+    }
+  },
+  "datePublished": publishedDate,
+  "dateModified": updatedDate || publishedDate,
+  "url": new URL(Astro.url.pathname, Astro.site),
+  "keywords": tags.join(', '),
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": new URL(Astro.url.pathname, Astro.site)
+  }
+};
+
+const faqSchema = faq && faq.length > 0 ? {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": faq.map(item => ({
+    "@type": "Question",
+    "name": item.question,
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": item.answer
+    }
+  }))
+} : null;
+
+const breadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://networkscan.ai" },
+    { "@type": "ListItem", "position": 2, "name": "Blog", "item": "https://networkscan.ai/blog" },
+    { "@type": "ListItem", "position": 3, "name": title, "item": new URL(Astro.url.pathname, Astro.site) }
+  ]
+};
+---
+
+<Base title={`${title} | NetworkScan.AI Blog`} description={description} type="article">
+  <Fragment slot="head">
+    <script type="application/ld+json" set:html={JSON.stringify(blogPostingSchema)} />
+    {faqSchema && <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />}
+    <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
+  </Fragment>
+
+  <!-- Nav -->
+  <header id="navbar" class="blog-nav">
+    <div class="nav-inner">
+      <a href="/" class="nav-logo">
+        <img src="/networkscan-mark.png" alt="NetworkScan.AI" style="height:36px;width:auto;display:block;filter:brightness(0) invert(1);" />
+        <span class="logo-wordmark">Network Scan</span>
+      </a>
+      <nav class="nav-links" aria-label="Main navigation">
+        <a href="/#how">Services</a>
+        <a href="/#how">How It Works</a>
+        <a href="/#stats">Why It Matters</a>
+        <a href="/blog" style="color:var(--amber)">Blog</a>
+      </nav>
+      <a href="/#cta-bottom" class="btn-primary nav-cta">Book a $100 Checkup →</a>
+      <button class="hamburger" aria-label="Open menu" aria-expanded="false" id="hamburgerBtn">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+    <div class="mobile-menu" id="mobileMenu" role="navigation" aria-label="Mobile navigation">
+      <a href="/#how">Services</a>
+      <a href="/#how">How It Works</a>
+      <a href="/#stats">Why It Matters</a>
+      <a href="/blog">Blog</a>
+      <a href="/#cta-bottom" class="btn-primary">Book a $100 Checkup →</a>
+    </div>
+  </header>
+
+  <!-- Breadcrumb -->
+  <div class="breadcrumb-bar">
+    <div class="container">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="/">Home</a>
+        <span class="bc-sep">›</span>
+        <a href="/blog">Blog</a>
+        <span class="bc-sep">›</span>
+        <span class="bc-current">{title}</span>
+      </nav>
+    </div>
+  </div>
+
+  <main class="blog-post-main">
+    <article class="container blog-article">
+
+      <!-- Article Header -->
+      <header class="article-header">
+        <div class="article-tags">
+          {tags.map(tag => <span class="tag-pill">{tag}</span>)}
+        </div>
+        <h1 class="article-title">{title}</h1>
+        <p class="article-description">{description}</p>
+        <div class="article-meta">
+          <div class="meta-author">
+            <div class="author-avatar-sm">{author.charAt(0)}</div>
+            <div>
+              <div class="meta-author-name">{author}</div>
+              <div class="meta-author-role">{authorRole}</div>
+            </div>
+          </div>
+          <div class="meta-right">
+            <time datetime={publishedDate}>{formattedDate}</time>
+            <span class="meta-dot">·</span>
+            <span>{readingTime} min read</span>
+          </div>
+        </div>
+      </header>
+
+      <!-- Article Body -->
+      <div class="article-body prose">
+        <slot />
+      </div>
+
+      <!-- AI Disclosure -->
+      <div class="ai-disclosure">
+        <svg viewBox="0 0 20 20" fill="currentColor" width="16" height="16"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/></svg>
+        Drafted with AI assistance from source material, reviewed before publication.
+      </div>
+
+      <!-- Tags -->
+      <div class="article-footer-tags">
+        <strong>Filed under:</strong>
+        {tags.map(tag => <span class="tag-pill tag-pill-sm">{tag}</span>)}
+      </div>
+
+      <!-- Back link -->
+      <div class="back-link">
+        <a href="/blog">← Back to Blog</a>
+      </div>
+
+    </article>
+
+    <!-- Related Articles -->
+    {relatedPosts.length > 0 && (
+      <section class="related-section">
+        <div class="container">
+          <h2 class="related-title">Related Articles</h2>
+          <div class="related-grid">
+            {relatedPosts.map(related => (
+              <a href={`/blog/${related.slug}`} class="related-card">
+                <div class="related-tags">
+                  {related.data.tags.slice(0,1).map(t => <span class="tag-pill tag-pill-sm">{t}</span>)}
+                </div>
+                <h3 class="related-card-title">{related.data.title}</h3>
+                <p class="related-card-desc">{related.data.description.slice(0, 120)}…</p>
+                <span class="related-read">Read article →</span>
+              </a>
+            ))}
+          </div>
+        </div>
+      </section>
+    )}
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <div class="footer-logo">
+            <img src="/networkscan-mark.png" alt="Network Scan" style="height:36px;width:auto;display:block;filter:brightness(0) invert(1);" />
+            <span class="logo-wordmark">Network Scan</span>
+          </div>
+          <p class="footer-tagline">Network security you can actually understand.<br>For businesses that can't afford surprises.</p>
+        </div>
+        <div>
+          <div class="footer-nav-title">Navigation</div>
+          <div class="footer-nav-links">
+            <a href="/#how">Services</a>
+            <a href="/#how">How It Works</a>
+            <a href="/#stats">Why It Matters</a>
+            <a href="/blog">Blog</a>
+          </div>
+        </div>
+        <div>
+          <div class="footer-contact-title">Questions?</div>
+          <p class="footer-contact-text">
+            Email <strong style="color:rgba(255,255,255,.75)">hello@networkscan.ai</strong><br><br>
+            We typically respond within a few hours during business days.
+          </p>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <div class="footer-copyright">© 2025 NetworkScan.AI · All rights reserved.</div>
+        <div class="footer-legal">
+          <a href="#">Privacy Policy</a>
+          <a href="#">Terms of Service</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+</Base>
+
+<style>
+  /* Nav — same as homepage */
+  #navbar {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 1000;
+    background: var(--navy);
+    box-shadow: 0 2px 20px rgba(0,0,0,.25);
+    transition: background var(--transition), box-shadow var(--transition);
+  }
+  .nav-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 68px;
+    padding-inline: 24px;
+    max-width: var(--max-w);
+    margin-inline: auto;
+  }
+  .nav-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--white);
+    letter-spacing: .08em;
+    text-transform: uppercase;
+  }
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 36px;
+  }
+  .nav-links a {
+    color: rgba(255,255,255,.82);
+    font-size: 14px;
+    font-weight: 500;
+    transition: color var(--transition);
+  }
+  .nav-links a:hover { color: var(--white); }
+  .nav-cta { margin-left: 20px; }
+  .hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    padding: 6px;
+    background: none;
+    border: none;
+  }
+  .hamburger span {
+    display: block;
+    width: 24px;
+    height: 2px;
+    background: var(--white);
+    border-radius: 2px;
+    transition: all 0.3s ease;
+  }
+  .mobile-menu {
+    display: none;
+    flex-direction: column;
+    gap: 0;
+    background: var(--navy);
+    padding: 0 24px 20px;
+  }
+  .mobile-menu.open { display: flex; }
+  .mobile-menu a {
+    color: rgba(255,255,255,.85);
+    font-size: 16px;
+    font-weight: 500;
+    padding: 14px 0;
+    border-bottom: 1px solid rgba(255,255,255,.08);
+    transition: color var(--transition);
+  }
+  .mobile-menu a:last-child { border-bottom: none; }
+  .mobile-menu a:hover { color: var(--amber); }
+  .mobile-menu .btn-primary { margin-top: 16px; justify-content: center; }
+  @media (max-width: 768px) {
+    .nav-links, .nav-cta { display: none; }
+    .hamburger { display: flex; }
+  }
+
+  /* Breadcrumb */
+  .breadcrumb-bar {
+    background: var(--gray-50);
+    border-bottom: 1px solid var(--gray-100);
+    padding: 12px 0;
+    margin-top: 68px;
+  }
+  .breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: var(--gray-600);
+    flex-wrap: wrap;
+  }
+  .breadcrumb a {
+    color: var(--navy);
+    font-weight: 500;
+  }
+  .breadcrumb a:hover { color: var(--amber); }
+  .bc-sep { color: var(--gray-400); }
+  .bc-current { color: var(--gray-600); }
+
+  /* Article */
+  .blog-post-main { padding-bottom: 0; }
+  .blog-article {
+    padding-top: 60px;
+    padding-bottom: 60px;
+    max-width: 780px;
+  }
+
+  .article-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 20px;
+  }
+  .tag-pill {
+    display: inline-block;
+    background: var(--amber);
+    color: var(--navy);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.8px;
+    padding: 4px 10px;
+    border-radius: 4px;
+    text-transform: uppercase;
+  }
+  .tag-pill-sm { font-size: 10px; padding: 3px 8px; }
+
+  .article-title {
+    font-size: clamp(28px, 4vw, 44px);
+    font-weight: 700;
+    color: var(--navy);
+    line-height: 1.15;
+    letter-spacing: -.3px;
+    margin-bottom: 16px;
+  }
+  .article-description {
+    font-size: 18px;
+    color: var(--gray-600);
+    line-height: 1.65;
+    margin-bottom: 28px;
+  }
+  .article-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+    padding: 20px 0;
+    border-top: 1px solid var(--gray-100);
+    border-bottom: 1px solid var(--gray-100);
+    margin-bottom: 48px;
+  }
+  .meta-author {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .author-avatar-sm {
+    width: 42px;
+    height: 42px;
+    background: var(--navy);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--white);
+    font-weight: 700;
+    font-size: 17px;
+    flex-shrink: 0;
+  }
+  .meta-author-name {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--navy);
+  }
+  .meta-author-role {
+    font-size: 13px;
+    color: var(--gray-600);
+  }
+  .meta-right {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    color: var(--gray-600);
+  }
+  .meta-dot { color: var(--gray-400); }
+
+  /* Prose / Article Body */
+  .prose { line-height: 1.8; color: var(--gray-800); }
+  .prose :global(h2) {
+    font-size: clamp(20px, 2.5vw, 26px);
+    font-weight: 700;
+    color: var(--navy);
+    margin-top: 52px;
+    margin-bottom: 16px;
+    line-height: 1.25;
+    letter-spacing: -.2px;
+  }
+  .prose :global(h3) {
+    font-size: 19px;
+    font-weight: 700;
+    color: var(--navy);
+    margin-top: 36px;
+    margin-bottom: 12px;
+  }
+  .prose :global(p) {
+    font-size: 16px;
+    line-height: 1.8;
+    margin-bottom: 20px;
+    color: var(--gray-800);
+  }
+  .prose :global(ul), .prose :global(ol) {
+    margin-bottom: 20px;
+    padding-left: 0;
+    list-style: none;
+  }
+  .prose :global(ul > li) {
+    padding-left: 24px;
+    position: relative;
+    margin-bottom: 10px;
+    font-size: 16px;
+    line-height: 1.7;
+  }
+  .prose :global(ul > li)::before {
+    content: '→';
+    position: absolute;
+    left: 0;
+    color: var(--amber);
+    font-weight: 700;
+  }
+  .prose :global(ol) { counter-reset: list-counter; }
+  .prose :global(ol > li) {
+    padding-left: 32px;
+    position: relative;
+    margin-bottom: 12px;
+    font-size: 16px;
+    line-height: 1.7;
+    counter-increment: list-counter;
+  }
+  .prose :global(ol > li)::before {
+    content: counter(list-counter) ".";
+    position: absolute;
+    left: 0;
+    color: var(--amber);
+    font-weight: 700;
+  }
+  .prose :global(strong) { font-weight: 700; color: var(--navy); }
+  .prose :global(em) { font-style: italic; }
+  .prose :global(code) {
+    background: var(--gray-100);
+    color: var(--navy);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 0.9em;
+    font-family: 'Courier New', monospace;
+  }
+  .prose :global(pre) {
+    background: var(--navy-dark);
+    color: var(--gray-100);
+    padding: 20px 24px;
+    border-radius: var(--radius);
+    overflow-x: auto;
+    margin-bottom: 24px;
+  }
+  .prose :global(pre code) {
+    background: none;
+    color: inherit;
+    padding: 0;
+    font-size: 14px;
+  }
+  .prose :global(blockquote) {
+    border-left: 4px solid var(--amber);
+    padding: 16px 20px;
+    margin: 28px 0;
+    background: rgba(232,168,48,.06);
+    border-radius: 0 var(--radius) var(--radius) 0;
+    font-style: italic;
+    color: var(--gray-600);
+  }
+  .prose :global(hr) {
+    border: none;
+    border-top: 1px solid var(--gray-100);
+    margin: 40px 0;
+  }
+  .prose :global(a) {
+    color: var(--navy);
+    text-decoration: underline;
+    text-decoration-color: var(--amber);
+    text-underline-offset: 3px;
+  }
+  .prose :global(a:hover) { color: var(--amber); }
+  .prose :global(table) {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 24px;
+    font-size: 15px;
+  }
+  .prose :global(th) {
+    background: var(--navy);
+    color: var(--white);
+    padding: 10px 14px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 13px;
+  }
+  .prose :global(td) {
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--gray-100);
+  }
+  .prose :global(tr:nth-child(even) td) { background: var(--gray-50); }
+
+  /* AI Disclosure */
+  .ai-disclosure {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--gray-50);
+    border: 1px solid var(--gray-100);
+    border-radius: var(--radius);
+    padding: 14px 18px;
+    font-size: 13px;
+    color: var(--gray-600);
+    margin-top: 48px;
+  }
+  .ai-disclosure svg { flex-shrink: 0; color: var(--gray-400); }
+
+  /* Footer tags */
+  .article-footer-tags {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 24px;
+    font-size: 14px;
+    color: var(--gray-600);
+  }
+  .back-link {
+    margin-top: 32px;
+    padding-top: 32px;
+    border-top: 1px solid var(--gray-100);
+  }
+  .back-link a {
+    color: var(--navy);
+    font-weight: 600;
+    font-size: 15px;
+  }
+  .back-link a:hover { color: var(--amber); }
+
+  /* Related */
+  .related-section {
+    background: var(--gray-50);
+    padding: 60px 0;
+    border-top: 1px solid var(--gray-100);
+  }
+  .related-title {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--navy);
+    margin-bottom: 28px;
+  }
+  .related-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+  }
+  .related-card {
+    background: var(--white);
+    border: 1px solid var(--gray-100);
+    border-radius: 12px;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    transition: transform var(--transition), box-shadow var(--transition);
+  }
+  .related-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-md);
+  }
+  .related-card-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--navy);
+    line-height: 1.3;
+  }
+  .related-card-desc {
+    font-size: 14px;
+    color: var(--gray-600);
+    line-height: 1.6;
+    flex: 1;
+  }
+  .related-read {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--amber);
+  }
+
+  /* Footer */
+  footer {
+    background: var(--navy-dark);
+    padding: 60px 0 0;
+  }
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 48px;
+    padding-bottom: 48px;
+  }
+  .footer-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--white);
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  .footer-tagline { font-size: 14px; color: rgba(255,255,255,.4); line-height: 1.5; }
+  .footer-nav-title, .footer-contact-title {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--amber);
+    margin-bottom: 18px;
+  }
+  .footer-nav-links { display: flex; flex-direction: column; gap: 10px; }
+  .footer-nav-links a { font-size: 14px; color: rgba(255,255,255,.55); transition: color var(--transition); }
+  .footer-nav-links a:hover { color: var(--white); }
+  .footer-contact-text { font-size: 14px; color: rgba(255,255,255,.55); line-height: 1.7; }
+  .footer-bottom {
+    border-top: 1px solid rgba(255,255,255,.07);
+    padding: 20px 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .footer-copyright { font-size: 13px; color: rgba(255,255,255,.28); }
+  .footer-legal { display: flex; gap: 24px; }
+  .footer-legal a { font-size: 13px; color: rgba(255,255,255,.28); transition: color var(--transition); }
+  .footer-legal a:hover { color: rgba(255,255,255,.55); }
+  @media (max-width: 768px) {
+    .footer-grid { grid-template-columns: 1fr; gap: 36px; }
+    .footer-bottom { flex-direction: column; align-items: flex-start; }
+  }
+</style>
+
+<script>
+  const btn = document.getElementById('hamburgerBtn');
+  const menu = document.getElementById('mobileMenu');
+  if (btn && menu) {
+    btn.addEventListener('click', () => {
+      const open = menu.classList.toggle('open');
+      btn.setAttribute('aria-expanded', String(open));
+      const spans = btn.querySelectorAll('span');
+      if (open) {
+        (spans[0] as HTMLElement).style.transform = 'translateY(7px) rotate(45deg)';
+        (spans[1] as HTMLElement).style.opacity = '0';
+        (spans[2] as HTMLElement).style.transform = 'translateY(-7px) rotate(-45deg)';
+      } else {
+        spans.forEach(s => { (s as HTMLElement).style.transform = ''; (s as HTMLElement).style.opacity = ''; });
+      }
+    });
+  }
+  // close mobile menu when clicking a link
+  document.querySelectorAll('.mobile-menu a').forEach(a => {
+    a.addEventListener('click', () => {
+      menu?.classList.remove('open');
+      btn?.setAttribute('aria-expanded', 'false');
+      btn?.querySelectorAll('span').forEach(s => {
+        (s as HTMLElement).style.transform = '';
+        (s as HTMLElement).style.opacity = '';
+      });
+    });
+  });
+</script>

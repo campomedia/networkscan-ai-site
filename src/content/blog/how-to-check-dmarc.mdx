@@ -1,0 +1,200 @@
+---
+title: "How to Check Your DMARC Record: A Step-by-Step Guide for Business Owners"
+description: "You can check your DMARC record in under 2 minutes using free tools. Here's exactly how to do it and what the results mean."
+publishedDate: "2026-08-21"
+author: "Marcus Webb"
+authorRole: "Network Security Analyst"
+tags: ["CHECK DMARC RECORD", "DMARC EMAIL SECURITY", "EMAIL SECURITY AUDIT"]
+schema:
+  type: HowTo
+faq:
+  - question: "What is the fastest way to check my DMARC record?"
+    answer: "The fastest method is MXToolbox. Go to mxtoolbox.com/DMARC.aspx, enter your domain name, and click the DMARC lookup button. Results appear within seconds and tell you whether a DMARC record exists, what the current policy is, and whether there are any configuration errors. The entire check takes under two minutes and requires no technical knowledge."
+  - question: "What does it mean if MXToolbox says 'No DMARC Record Found'?"
+    answer: "It means your domain has no DMARC protection. Anyone can send email that appears to come from your domain and it will likely be delivered without any authentication-based filtering. This is the most common result for small business domains. The fix is to create a DMARC TXT record in your DNS starting with p=none to begin monitoring your email traffic."
+  - question: "My DMARC record says p=none — is that good enough?"
+    answer: "No. The p=none policy means DMARC is in monitoring mode only — it does not block or quarantine spoofed mail. It is the correct starting point, but the goal is to move to p=reject. Most businesses can safely reach p=reject within 4-8 weeks of implementing DMARC, after reviewing aggregate reports to confirm all legitimate mail is passing authentication."
+  - question: "What is the _dmarc subdomain and why does it matter?"
+    answer: "DMARC records must be published as a DNS TXT record under the exact subdomain _dmarc.yourdomain.com — the underscore prefix is required. If you publish the record at the wrong location (such as directly on yourdomain.com or at dmarc.yourdomain.com without the underscore), mail servers will not find it and your domain will appear unprotected."
+---
+
+Checking your DMARC record is one of the fastest security checks any business owner can run. It takes under two minutes, requires no technical background, and immediately tells you whether your domain can be impersonated in email attacks.
+
+Most small businesses discover during this check that they have no DMARC protection at all — leaving their domain open to spoofing by anyone who wants to send email that looks like it came from their office.
+
+Here is exactly how to do it.
+
+## TL;DR
+
+- The fastest way to check DMARC is to use MXToolbox: go to mxtoolbox.com/DMARC.aspx, enter your domain, and read the result.
+- If the tool says "No DMARC Record Found," your domain is unprotected and anyone can spoof it.
+- A record showing `p=none` means DMARC is in monitoring mode only — not enforcing any protection.
+- A record showing `p=reject` means full enforcement is in place, which is the goal.
+- You can also check DMARC from the command line with: `dig TXT _dmarc.yourdomain.com`
+- DMARC records must be published at the exact subdomain `_dmarc.yourdomain.com` — the underscore is required.
+- If you find no DMARC record, the next step is to add one via your DNS provider starting with `p=none` to begin monitoring.
+- A professional network security audit will check your DMARC, SPF, and DKIM status automatically as part of a full email security review.
+
+## What tools do you need?
+
+You need nothing installed. All of these checks run in a web browser or with tools already available on most computers.
+
+**Web-based tools (easiest):**
+- **MXToolbox** — mxtoolbox.com/DMARC.aspx — the most widely used DMARC checker, free, no account required
+- **dmarcian** — dmarcian.com/dmarc-inspector — also free, shows additional parsing detail
+- **Google Admin Toolbox** — toolbox.googleapps.com/apps/checkmx — useful if your domain runs Google Workspace
+
+**Command line (for technical users):**
+- `dig` — available on macOS and Linux by default; on Windows, use nslookup
+- `nslookup` — built into Windows
+
+You only need one of these. MXToolbox is the recommended starting point for most business owners.
+
+## How do you check DMARC with MXToolbox?
+
+**Step 1:** Open your web browser and go to `mxtoolbox.com/DMARC.aspx`
+
+**Step 2:** In the search field, enter your domain name — for example, `mainstreetdental.com`. Do not include `www` or `https://`. Just the bare domain.
+
+**Step 3:** Click the **DMARC Lookup** button (or press Enter).
+
+**Step 4:** Read the result. You will see one of three outcomes:
+
+---
+
+**Outcome A: "No DMARC Record Found"**
+
+This means your domain has no DMARC protection. There is no TXT record at `_dmarc.yourdomain.com`, which means mail servers worldwide have no guidance on what to do with email that fails authentication from your domain. The result: spoofed email claiming to be from you is likely delivered without any friction.
+
+This is the most common result for small business domains. It does not mean you have been attacked — it means you are unprotected if someone tries.
+
+---
+
+**Outcome B: A record is found, showing `p=none`**
+
+Your domain has a DMARC record, but it is in monitoring mode. The `p=none` policy means the record exists and is generating reports, but no action is being taken on mail that fails authentication. This is the correct first step when implementing DMARC — but it is not the end goal. Your aim is to reach `p=reject`.
+
+---
+
+**Outcome C: A record is found, showing `p=quarantine` or `p=reject`**
+
+Your domain has active DMARC enforcement. `p=quarantine` sends failing mail to spam; `p=reject` blocks it entirely. `p=reject` is the strongest protection. If MXToolbox shows your record at `p=reject` with no configuration errors, you are in good shape.
+
+---
+
+## How do you check DMARC from the command line?
+
+If you prefer a direct DNS query, open Terminal (macOS/Linux) or Command Prompt (Windows) and run:
+
+**macOS / Linux:**
+```bash
+dig TXT _dmarc.yourdomain.com
+```
+
+**Windows:**
+```bash
+nslookup -type=TXT _dmarc.yourdomain.com
+```
+
+Replace `yourdomain.com` with your actual domain.
+
+A valid DMARC record looks like this in the output:
+```
+_dmarc.yourdomain.com.  3600  IN  TXT  "v=DMARC1; p=reject; rua=mailto:dmarc@yourdomain.com"
+```
+
+If the query returns no results or an `NXDOMAIN` error for `_dmarc.yourdomain.com`, your domain has no DMARC record.
+
+Note: the underscore in `_dmarc` is required. Do not omit it.
+
+## How do you interpret the DMARC record values?
+
+Once you have found your record, here is what the key fields mean:
+
+**`v=DMARC1`** — Required. Identifies this as a DMARC record. Must be the first field.
+
+**`p=none/quarantine/reject`** — The policy level:
+- `none` — Monitor only, no action on failing mail
+- `quarantine` — Send failing mail to spam/junk
+- `reject` — Block failing mail entirely
+
+**`rua=mailto:address`** — Where aggregate reports are sent. These are XML files sent by mail providers showing authentication results. Required if you want to receive monitoring data.
+
+**`ruf=mailto:address`** — Where forensic (failure) reports are sent. Optional. Contains details about individual failing messages.
+
+**`pct=100`** — Percentage of messages the policy applies to. Default is 100. During rollout, some administrators set this to 10 or 25 to gradually test enforcement.
+
+**`adkim=r/s`** — DKIM alignment mode. `r` (relaxed) allows subdomains to match; `s` (strict) requires exact domain match.
+
+**`aspf=r/s`** — SPF alignment mode. Same options as `adkim`.
+
+## How do you check whether SPF and DKIM are also in place?
+
+DMARC depends on SPF and DKIM to function. If those are missing or misconfigured, DMARC enforcement will block or quarantine your own legitimate mail. Before moving to `p=reject`, check both.
+
+**Check SPF:**
+```bash
+dig TXT yourdomain.com
+```
+Look for a record starting with `v=spf1`. A typical SPF record looks like:
+```
+v=spf1 include:_spf.google.com ~all
+```
+If no SPF record exists, mail from your domain fails SPF checks automatically.
+
+**Check DKIM:**
+DKIM is harder to check directly because the DNS record lives under a selector subdomain (e.g., `google._domainkey.yourdomain.com`). The selector name is determined by your email provider. If you use Google Workspace, the selector is typically `google`; for Microsoft 365, it is usually `selector1` and `selector2`.
+
+MXToolbox has a DKIM lookup tool at mxtoolbox.com/dkim.aspx where you can enter your domain and selector to check.
+
+For a full breakdown of how all three records work together, see [DMARC vs SPF vs DKIM: Which Email Security Records Does Your Business Need?](/blog/dmarc-vs-spf-vs-dkim).
+
+## What should you do if your domain has no DMARC record?
+
+If your check reveals no DMARC record, the fix is to add one via your DNS provider. Your DNS is wherever your domain is registered or managed — commonly GoDaddy, Namecheap, Cloudflare, Squarespace, or Google Domains.
+
+**Step 1:** Log in to your DNS management panel.
+
+**Step 2:** Add a new TXT record with these values:
+- **Name / Host:** `_dmarc`
+- **Value / Content:** `v=DMARC1; p=none; rua=mailto:dmarc@yourdomain.com`
+- **TTL:** 3600 (or whatever your provider defaults to)
+
+Replace `yourdomain.com` with your actual domain in the `rua` email address.
+
+**Step 3:** Wait for DNS propagation. Changes typically take 15 minutes to a few hours to appear globally.
+
+**Step 4:** Verify the record appeared by running the MXToolbox check again.
+
+**Step 5:** Wait 2-4 weeks and review the aggregate reports that arrive at the `rua` address. These reports show every sending source that is authenticating on behalf of your domain. Once you have identified all legitimate senders and confirmed they are passing SPF and DKIM, you can tighten the policy to `p=quarantine` and eventually `p=reject`.
+
+The process of moving from `p=none` to `p=reject` is covered in detail in [What Is DMARC? Email Authentication for Small Business Explained](/blog/what-is-dmarc).
+
+## How often should you check your DMARC configuration?
+
+Once DMARC is in place at `p=reject`, it does not require constant monitoring. However, a few situations call for a re-check:
+
+- You add a new email service (a marketing platform, a scheduling tool, a new CRM) — any service that sends email on your behalf needs to be added to your SPF record and set up with DKIM before you send, or it will fail DMARC
+- You migrate to a new email provider
+- You change domain registrars or DNS providers
+- You receive a DMARC aggregate report showing unexpected failures
+
+A good practice is to include a DMARC review in any annual security check. A network security audit will check your DMARC, SPF, and DKIM configuration automatically — see [DMARC for Small Business: Why 70% of SMBs Are Vulnerable to Email Spoofing](/blog/dmarc-small-business) for context on why this matters.
+
+## Frequently Asked Questions
+
+### What is the fastest way to check my DMARC record?
+
+The fastest method is MXToolbox. Go to mxtoolbox.com/DMARC.aspx, enter your domain name, and click the DMARC lookup button. Results appear within seconds and tell you whether a DMARC record exists, what the current policy is, and whether there are any configuration errors. The entire check takes under two minutes and requires no technical knowledge.
+
+### What does it mean if MXToolbox says "No DMARC Record Found"?
+
+It means your domain has no DMARC protection. Anyone can send email that appears to come from your domain and it will likely be delivered without any authentication-based filtering. This is the most common result for small business domains. The fix is to create a DMARC TXT record in your DNS starting with `p=none` to begin monitoring your email traffic.
+
+### My DMARC record says p=none — is that good enough?
+
+No. The `p=none` policy means DMARC is in monitoring mode only — it does not block or quarantine spoofed mail. It is the correct starting point, but the goal is to move to `p=reject`. Most businesses can safely reach `p=reject` within 4-8 weeks of implementing DMARC, after reviewing aggregate reports to confirm all legitimate mail is passing authentication.
+
+### What is the _dmarc subdomain and why does it matter?
+
+DMARC records must be published as a DNS TXT record under the exact subdomain `_dmarc.yourdomain.com` — the underscore prefix is required. If you publish the record at the wrong location (such as directly on `yourdomain.com` or at `dmarc.yourdomain.com` without the underscore), mail servers will not find it and your domain will appear unprotected.

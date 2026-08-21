@@ -1,0 +1,149 @@
+---
+title: "What Is DMARC? Email Authentication for Small Business Explained"
+description: "DMARC stops attackers from sending emails that look like they came from your business. Here's what it is, how it works, and why most small businesses don't have it set up."
+publishedDate: "2026-08-21"
+author: "Marcus Webb"
+authorRole: "Network Security Analyst"
+tags: ["DMARC EMAIL SECURITY", "EMAIL AUTHENTICATION SMB", "EMAIL SPOOFING PROTECTION"]
+schema:
+  type: Article
+faq:
+  - question: "What does DMARC stand for?"
+    answer: "DMARC stands for Domain-based Message Authentication, Reporting, and Conformance. It is a DNS-based email security standard that tells receiving mail servers how to handle messages that fail authentication checks. The name describes exactly what it does: it authenticates messages, generates reports on authentication results, and enforces a policy on what to do when messages fail."
+  - question: "Do I need DMARC if I already have SPF?"
+    answer: "Yes. SPF alone is not enough to stop email spoofing. SPF verifies that a message was sent from an authorized server, but it does not tell the receiving mail server what to do if the check fails — that is DMARC's job. Without a DMARC record, even a failed SPF check may still result in the message being delivered to your recipient's inbox. DMARC enforces the policy and closes that gap."
+  - question: "How do I know if my business has DMARC configured?"
+    answer: "You can check in about 60 seconds using a free tool like MXToolbox. Go to mxtoolbox.com/DMARC.aspx and enter your domain name. If no DMARC record is found, your domain is unprotected. You can also check via command line by running: dig TXT _dmarc.yourdomain.com"
+  - question: "Will setting up DMARC affect my existing email?"
+    answer: "When set to the 'none' policy, DMARC only monitors — it does not affect email delivery at all. This is the recommended starting point for any business. You monitor reports for a few weeks to understand your sending sources, then gradually tighten the policy to 'quarantine' and eventually 'reject' once you are confident all legitimate email will pass authentication."
+---
+
+Every day, attackers send thousands of emails that appear to come from legitimate businesses — dental offices, law firms, accounting practices, restaurants. The recipients trust the sender because the email says it is from `billing@yourbusiness.com`. The business has no idea this is happening. And in most cases, nothing technical is preventing it.
+
+The protocol that stops this is called DMARC. It is free to implement, it takes about 20 minutes to set up, and research consistently finds that more than 70% of small business domains have no DMARC protection at all.
+
+## TL;DR
+
+- DMARC (Domain-based Message Authentication, Reporting, and Conformance) is a DNS record that tells email providers how to handle messages that claim to be from your domain but fail authentication checks.
+- Without DMARC, anyone on the internet can send an email that appears to come from your business address — your patients, clients, or customers will see your name and domain in the From field.
+- DMARC works alongside two other records: SPF (which lists servers authorized to send your email) and DKIM (which cryptographically signs your messages).
+- DMARC has three policy levels: `none` (monitor only), `quarantine` (send suspicious mail to spam), and `reject` (block the message entirely).
+- Implementing DMARC at the `reject` level stops email spoofing attacks against your domain cold.
+- Most small businesses do not have DMARC set up, making them easy targets for impersonation attacks that damage client trust and can lead to fraud.
+- You can check whether your domain has DMARC protection right now using a free tool at mxtoolbox.com — it takes under 60 seconds.
+- A network security audit will check your DMARC, SPF, and DKIM status as part of a full email security assessment.
+
+## What problem does DMARC actually solve?
+
+To understand DMARC, you need to understand how easy it is to send a spoofed email.
+
+Email was designed in the 1970s with no authentication whatsoever. The "From" address in an email is just a field — anyone can put anything in it. When an attacker crafts a phishing email claiming to be from `billing@mainstreetdental.com`, there is nothing in the original email protocol to stop that message from reaching a patient's inbox looking completely legitimate.
+
+This type of attack is called domain spoofing, and it is one of the most effective social engineering techniques available to attackers. The email looks right. The domain matches. The patient clicks the link or sends the wire transfer.
+
+DMARC closes this gap by giving domain owners a way to publish a policy — a public record in DNS — that tells mail providers worldwide: "Here is how to verify that email from our domain is legitimate, and here is what to do if it is not."
+
+## How does DMARC work with SPF and DKIM?
+
+DMARC does not work alone. It is the enforcement layer on top of two other email authentication standards:
+
+**SPF (Sender Policy Framework)** is a DNS record that lists every IP address and service authorized to send email on behalf of your domain. When a mail server receives a message claiming to be from your domain, it checks your SPF record. If the sending server is not on the list, SPF fails.
+
+**DKIM (DomainKeys Identified Mail)** adds a cryptographic signature to every outgoing email. The receiving server checks the signature against a public key published in your DNS. A valid signature proves the message was not modified in transit and was sent by someone with access to your private key.
+
+**DMARC** ties these two systems together. A DMARC record specifies:
+
+1. What policy to apply when SPF or DKIM fail — `none`, `quarantine`, or `reject`
+2. Where to send aggregate reports showing authentication results
+3. What percentage of messages the policy should apply to (useful for gradual rollout)
+
+For a message to pass DMARC, it must pass either SPF or DKIM, and the domain in those checks must align with the domain in the visible "From" address. This alignment requirement is what makes DMARC effective — it closes the loophole where an attacker's server might pass SPF for their own domain while spoofing yours in the From field.
+
+For a deep dive on how these three records differ and why you need all of them, see [DMARC vs SPF vs DKIM: Which Email Security Records Does Your Business Need?](/blog/dmarc-vs-spf-vs-dkim)
+
+## What are the three DMARC policy levels?
+
+DMARC gives you three policy options, published as the `p=` value in your DMARC DNS record:
+
+**`p=none`** — Monitor mode. Mail continues to be delivered normally regardless of whether it passes or fails authentication. You receive reports showing what is happening, but no action is taken on failing mail. This is always the correct starting point when you first implement DMARC — it lets you see all your legitimate mail sources without risking disruption.
+
+**`p=quarantine`** — Suspicious mail gets sent to the spam or junk folder instead of the inbox. Messages that fail DMARC are not blocked outright, but they are flagged and separated from legitimate mail. This is an intermediate step between monitoring and full enforcement.
+
+**`p=reject`** — The strongest policy. Mail that fails DMARC is rejected outright by the receiving server — it never reaches the inbox, the spam folder, or anywhere else. This is the goal for most businesses. Once you have monitored your mail flow and confirmed that all your legitimate sending services are properly authenticated, `reject` stops spoofing cold.
+
+Most security guidance recommends starting at `p=none`, reviewing reports for 2-4 weeks, then moving to `p=quarantine`, then eventually to `p=reject`.
+
+## What does a DMARC record actually look like?
+
+A DMARC record is a TXT record added to your DNS, under the subdomain `_dmarc.yourdomain.com`. A basic record looks like this:
+
+```
+v=DMARC1; p=none; rua=mailto:dmarc-reports@yourdomain.com
+```
+
+Breaking that down:
+- `v=DMARC1` — identifies this as a DMARC record
+- `p=none` — the policy (none/quarantine/reject)
+- `rua=` — the email address where aggregate reports get sent
+
+A full enforcement record looks like:
+
+```
+v=DMARC1; p=reject; rua=mailto:dmarc-reports@yourdomain.com; adkim=s; aspf=s
+```
+
+The `adkim=s` and `aspf=s` settings enforce strict alignment, meaning the authenticated domain must exactly match your From domain.
+
+## What happens to small businesses without DMARC?
+
+Without a DMARC record — or with only `p=none` — your domain is open to spoofing. Attackers can and do:
+
+**Send phishing emails to your clients.** A criminal sends a message to your dental patients saying their appointment has been rescheduled and asking them to log in to update their insurance information. The email appears to be from your office. Patients comply. Their credentials are compromised.
+
+**Execute business email compromise (BEC) fraud.** An attacker spoofs your email address and contacts your accountant or a vendor requesting a wire transfer or change in payment details. This is one of the most financially devastating cybercrimes targeting small businesses, with average losses exceeding $125,000 per incident.
+
+**Damage your reputation.** When spam filters catch email spoofed from your domain, they may flag all email from your domain — including your legitimate outbound mail — as suspicious. Your delivery rates drop and your business reputation suffers even though you did nothing wrong.
+
+**Target industries with high-value data.** Dental and medical offices (HIPAA-sensitive data), law firms (privileged client communications), accounting firms (tax and financial records), and real estate offices (transaction funds and wire details) are disproportionately targeted because attackers know clients in these industries act quickly on urgent requests.
+
+To check whether your domain is protected right now, follow the steps in [How to Check Your DMARC Record: A Step-by-Step Guide for Business Owners](/blog/how-to-check-dmarc).
+
+## Why don't more small businesses have DMARC?
+
+The most common reason is simply that no one told them. DMARC is a DNS configuration — the kind of thing that typically falls between IT support and the business owner. IT support keeps email running; they may not proactively audit authentication settings unless something goes wrong. Business owners do not know to ask.
+
+DMARC is also invisible when it is missing. There is no error message, no alert, no warning. Everything works fine for legitimate mail whether DMARC is in place or not. The absence is only apparent when something goes wrong.
+
+Finally, implementing DMARC correctly requires some care. Moving too fast to a `reject` policy without first auditing all your sending services can block legitimate mail — marketing emails from services like Mailchimp, automated scheduling systems, third-party platforms that send on your behalf. The process requires patience and a monitoring phase, which discourages casual implementation.
+
+But none of this is technically complex. Any IT professional can implement DMARC in under an hour for a typical small business. The risk of not having it far outweighs the effort of setting it up.
+
+## How does DMARC protect specific industries?
+
+For **dental and medical offices**, DMARC prevents attackers from impersonating your practice to send phishing emails to patients — a particularly sensitive risk given that patients trust healthcare communications implicitly and HIPAA violations can follow if patient data is compromised through social engineering.
+
+For **law firms**, email impersonation threatens attorney-client privilege and can be used to intercept sensitive communications or redirect settlement funds. State bar associations increasingly recognize email security as part of competent data protection.
+
+For **accounting and CPA firms**, tax season creates a reliable phishing window. Clients expect urgent emails from their accountants. An unprotected domain is an easy vehicle for tax-related fraud.
+
+For **real estate offices**, wire fraud via email impersonation is a persistent and devastating threat. Buyers and sellers regularly transfer large sums based on emailed wire instructions. A spoofed email at exactly the right moment can redirect those funds to a criminal account.
+
+All four of these scenarios are preventable with proper DMARC configuration. For a look at the full scope of email risk for small businesses, see [DMARC for Small Business: Why 70% of SMBs Are Vulnerable to Email Spoofing](/blog/dmarc-small-business).
+
+## Frequently Asked Questions
+
+### What does DMARC stand for?
+
+DMARC stands for Domain-based Message Authentication, Reporting, and Conformance. It is a DNS-based email security standard that tells receiving mail servers how to handle messages that fail authentication checks. The name describes exactly what it does: it authenticates messages, generates reports on authentication results, and enforces a policy on what to do when messages fail.
+
+### Do I need DMARC if I already have SPF?
+
+Yes. SPF alone is not enough to stop email spoofing. SPF verifies that a message was sent from an authorized server, but it does not tell the receiving mail server what to do if the check fails — that is DMARC's job. Without a DMARC record, even a failed SPF check may still result in the message being delivered to your recipient's inbox. DMARC enforces the policy and closes that gap.
+
+### How do I know if my business has DMARC configured?
+
+You can check in about 60 seconds using a free tool like MXToolbox. Go to mxtoolbox.com/DMARC.aspx and enter your domain name. If no DMARC record is found, your domain is unprotected. You can also check via command line by running: `dig TXT _dmarc.yourdomain.com`
+
+### Will setting up DMARC affect my existing email?
+
+When set to the `none` policy, DMARC only monitors — it does not affect email delivery at all. This is the recommended starting point for any business. You monitor reports for a few weeks to understand your sending sources, then gradually tighten the policy to `quarantine` and eventually `reject` once you are confident all legitimate email will pass authentication.

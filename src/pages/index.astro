@@ -1,0 +1,1572 @@
+---
+import Base from '../layouts/Base.astro';
+---
+
+<Base
+  title="NetworkScan.AI — Network Security for Small Business"
+  description="Door-to-door network security scanning for small businesses. $100 flat fee. We find vulnerabilities, give you plain-English results, and leave — no subscriptions, no upsell."
+>
+
+<!-- ═══════════════════════════════════════════════════════════
+     NAV
+══════════════════════════════════════════════════════════ -->
+<header id="navbar">
+  <div class="nav-inner">
+    <a href="#" class="nav-logo">
+      <img src="/networkscan-mark.png" alt="Network Scan" style="height:36px;width:auto;display:block;filter:brightness(0) invert(1);" />
+      <span class="logo-wordmark">Network Scan</span>
+    </a>
+    <nav class="nav-links" aria-label="Main navigation">
+      <a href="#how">Services</a>
+      <a href="#how">How It Works</a>
+      <a href="#stats">Why It Matters</a>
+      <a href="/blog">Blog</a>
+    </nav>
+    <a href="#cta-bottom" class="btn-primary nav-cta">Book a $100 Checkup →</a>
+    <button class="hamburger" aria-label="Open menu" aria-expanded="false" onclick="toggleMenu(this)">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+  <div class="mobile-menu" id="mobileMenu" role="navigation" aria-label="Mobile navigation">
+    <a href="#how" onclick="closeMobileMenu()">Services</a>
+    <a href="#how" onclick="closeMobileMenu()">How It Works</a>
+    <a href="#stats" onclick="closeMobileMenu()">Why It Matters</a>
+    <a href="/blog" onclick="closeMobileMenu()">Blog</a>
+    <a href="#cta-bottom" class="btn-primary" onclick="closeMobileMenu()">Book a $100 Checkup →</a>
+  </div>
+</header>
+
+<main>
+
+<!-- ═══════════════════════════════════════════════════════════
+     HERO
+══════════════════════════════════════════════════════════ -->
+<section id="hero">
+  <div class="container">
+    <div class="hero-inner">
+
+      <!-- Left: text -->
+      <div class="hero-text">
+        <div class="hero-eyebrow fade-up">Network Security for Small Business</div>
+        <h1 class="hero-h1 fade-up delay-1">$100 Network Health Check for Your Business</h1>
+        <p class="hero-sub fade-up delay-2">Most small businesses have at least one critical security vulnerability they have no idea about. We find it. You fix it. Done.</p>
+        <div class="hero-cta-group fade-up delay-3">
+          <a href="#cta-bottom" class="btn-primary large">Book a $100 Security Checkup →</a>
+          <p class="hero-disclaimer">No jargon. No disruption. Plain English results before we leave.</p>
+        </div>
+      </div>
+
+      <!-- Right: mock report card -->
+      <div class="hero-visual fade-up delay-2">
+        <div class="report-card">
+          <div class="report-header">
+            <div class="report-title-block">
+              <div class="report-title">Network Security Report</div>
+              <div class="report-meta">Generated · Main Street Dental, Phoenix AZ</div>
+            </div>
+            <div class="report-badge">Complete</div>
+          </div>
+
+          <!-- Score -->
+          <div class="score-block">
+            <svg class="score-dial" viewBox="0 0 58 58" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="29" cy="29" r="24" stroke="rgba(255,255,255,.08)" stroke-width="6"/>
+              <circle cx="29" cy="29" r="24"
+                stroke="#e8a830"
+                stroke-width="6"
+                stroke-dasharray="150.8"
+                stroke-dashoffset="60"
+                stroke-linecap="round"
+                transform="rotate(-90 29 29)"/>
+              <text x="29" y="34" text-anchor="middle" fill="#ffffff" font-size="13" font-weight="700" font-family="Inter,sans-serif">62</text>
+            </svg>
+            <div class="score-info">
+              <div class="score-label">Risk Score</div>
+              <div class="score-value">62<span style="font-size:18px;color:rgba(255,255,255,.4)">/100</span></div>
+              <div class="score-sub">Moderate — Action recommended</div>
+            </div>
+          </div>
+
+          <!-- Progress bars -->
+          <div class="progress-row">
+            <div class="progress-label-row"><span>Scan Coverage</span><span style="color:#e8a830">100%</span></div>
+            <div class="progress-bar"><div class="progress-fill" style="width:100%;background:var(--green)"></div></div>
+          </div>
+          <div class="progress-row">
+            <div class="progress-label-row"><span>Devices Analyzed</span><span style="color:rgba(255,255,255,.65)">14 / 14</span></div>
+            <div class="progress-bar"><div class="progress-fill" style="width:100%;background:rgba(232,168,48,.6)"></div></div>
+          </div>
+
+          <!-- Findings -->
+          <div class="findings-label">Findings — 3 Issues Detected</div>
+
+          <div class="finding critical">
+            <div class="finding-dot"></div>
+            <div class="finding-body">
+              <div class="finding-name">Exposed RDP Port (3389)</div>
+              <div class="finding-desc">Open to internet · No auth restrictions</div>
+            </div>
+            <div class="finding-tag">Critical</div>
+          </div>
+
+          <div class="finding medium">
+            <div class="finding-dot"></div>
+            <div class="finding-body">
+              <div class="finding-name">Guest WiFi Network Overlap</div>
+              <div class="finding-desc">Guest traffic shares POS subnet</div>
+            </div>
+            <div class="finding-tag">Medium</div>
+          </div>
+
+          <div class="finding low">
+            <div class="finding-dot"></div>
+            <div class="finding-body">
+              <div class="finding-name">Firmware Out of Date</div>
+              <div class="finding-desc">Router model HR-2040 · 3 versions behind</div>
+            </div>
+            <div class="finding-tag">Low</div>
+          </div>
+
+          <div class="report-footer">
+            <div class="report-footer-label">NetworkScan.AI · Confidential</div>
+            <div class="report-footer-status">
+              <div class="status-dot"></div>
+              Report delivered
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════
+     STATS BAR
+══════════════════════════════════════════════════════════ -->
+<section id="stats">
+  <div class="container">
+    <div class="stats-grid">
+      <div class="stat-item fade-up">
+        <div class="stat-number">$200,000</div>
+        <div class="stat-label">Average cost of an SMB data breach</div>
+      </div>
+      <div class="stat-item fade-up delay-1">
+        <div class="stat-number">43%</div>
+        <div class="stat-label">of cyberattacks target small businesses</div>
+      </div>
+      <div class="stat-item fade-up delay-2">
+        <div class="stat-number">$170K</div>
+        <div class="stat-label">Average ransomware payment for an SMB</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════
+     HOW IT WORKS
+══════════════════════════════════════════════════════════ -->
+<section id="how">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-label fade-up">How It Works</div>
+      <h2 class="section-h2 fade-up delay-1">Simple. Fast. No disruption.</h2>
+      <p class="section-sub fade-up delay-2">Three steps from booking to knowing exactly where you stand.</p>
+    </div>
+    <div class="steps-grid">
+
+      <div class="step-card fade-up">
+        <div class="step-num">1</div>
+        <div class="step-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="var(--amber)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
+          </svg>
+        </div>
+        <div class="step-title">Book Your Checkup</div>
+        <p class="step-body">Choose a time online or call us. We come to your location — no need to send anything or prepare in advance.</p>
+      </div>
+
+      <div class="step-card fade-up delay-1">
+        <div class="step-num">2</div>
+        <div class="step-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="var(--amber)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M1.42 9a16 16 0 0 1 21.16 0"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><circle cx="12" cy="20" r="1" fill="var(--amber)" stroke="none"/>
+          </svg>
+        </div>
+        <div class="step-title">We Scan. You Work.</div>
+        <p class="step-body">Our 30–45 minute passive scan runs quietly in the background. Your team keeps working normally. We check everything from your public internet exposure to every device on your internal network — without touching a single computer.</p>
+      </div>
+
+      <div class="step-card fade-up delay-2">
+        <div class="step-num">3</div>
+        <div class="step-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="var(--amber)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><line x1="10" y1="9" x2="8" y2="9"/>
+          </svg>
+        </div>
+        <div class="step-title">We Walk You Through It</div>
+        <p class="step-body">We walk you through your results before we pack up — plain English, no jargon, no waiting.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════
+     WHAT'S INCLUDED
+══════════════════════════════════════════════════════════ -->
+<section id="included">
+  <div class="container">
+    <div class="included-grid">
+
+      <div class="included-left">
+        <div class="section-label fade-up">What's Included</div>
+        <h2 class="included-h2 fade-up delay-1">Network Health Check<br>— $100 flat</h2>
+        <p class="included-p fade-up delay-2">
+          One flat fee. One visit. One report you can actually read. No recurring subscription, no upsell pressure, no confusing tech-speak. Just an honest picture of your network's security posture — and what to do next.
+        </p>
+        <p class="included-p fade-up delay-3" style="margin-top:16px;">
+          Every scan is conducted by a certified network security professional using the same passive tools trusted by enterprise security teams — not guesswork software.
+        </p>
+      </div>
+
+      <div class="fade-up delay-2">
+        <div class="checklist-card">
+          <div class="check-item">
+            <div class="check-icon">
+              <svg viewBox="0 0 12 12" fill="none" stroke="var(--navy)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="1.5 6 4.5 9 10.5 3"/></svg>
+            </div>
+            <div class="check-text"><strong>Shodan / public IP exposure check</strong> — what the open internet sees about your business before we arrive</div>
+          </div>
+          <div class="check-item">
+            <div class="check-icon">
+              <svg viewBox="0 0 12 12" fill="none" stroke="var(--navy)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="1.5 6 4.5 9 10.5 3"/></svg>
+            </div>
+            <div class="check-text"><strong>Email breach scan</strong> — every staff email checked against known data breaches</div>
+          </div>
+          <div class="check-item">
+            <div class="check-icon">
+              <svg viewBox="0 0 12 12" fill="none" stroke="var(--navy)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="1.5 6 4.5 9 10.5 3"/></svg>
+            </div>
+            <div class="check-text"><strong>Email security (DMARC/SPF/DKIM)</strong> — stops attackers from impersonating your domain</div>
+          </div>
+          <div class="check-item">
+            <div class="check-icon">
+              <svg viewBox="0 0 12 12" fill="none" stroke="var(--navy)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="1.5 6 4.5 9 10.5 3"/></svg>
+            </div>
+            <div class="check-text"><strong>External network scan</strong> — open ports, exposed services, misconfigured access</div>
+          </div>
+          <div class="check-item">
+            <div class="check-icon">
+              <svg viewBox="0 0 12 12" fill="none" stroke="var(--navy)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="1.5 6 4.5 9 10.5 3"/></svg>
+            </div>
+            <div class="check-text"><strong>Full device inventory</strong> — every device on your network, including ones you forgot about</div>
+          </div>
+          <div class="check-item">
+            <div class="check-icon">
+              <svg viewBox="0 0 12 12" fill="none" stroke="var(--navy)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="1.5 6 4.5 9 10.5 3"/></svg>
+            </div>
+            <div class="check-text"><strong>Default credential checks</strong> on routers, printers, cameras, and NAS devices</div>
+          </div>
+          <div class="check-item">
+            <div class="check-icon">
+              <svg viewBox="0 0 12 12" fill="none" stroke="var(--navy)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="1.5 6 4.5 9 10.5 3"/></svg>
+            </div>
+            <div class="check-text"><strong>Known CVE checks</strong> on discoverable services</div>
+          </div>
+          <div class="check-item">
+            <div class="check-icon">
+              <svg viewBox="0 0 12 12" fill="none" stroke="var(--navy)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="1.5 6 4.5 9 10.5 3"/></svg>
+            </div>
+            <div class="check-text"><strong>SNMP &amp; UPnP exposure</strong> — common router/switch misconfigurations</div>
+          </div>
+          <div class="check-item">
+            <div class="check-icon">
+              <svg viewBox="0 0 12 12" fill="none" stroke="var(--navy)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="1.5 6 4.5 9 10.5 3"/></svg>
+            </div>
+            <div class="check-text"><strong>SSL/TLS audit</strong> on your public-facing website and mail server</div>
+          </div>
+          <div class="check-item">
+            <div class="check-icon">
+              <svg viewBox="0 0 12 12" fill="none" stroke="var(--navy)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="1.5 6 4.5 9 10.5 3"/></svg>
+            </div>
+            <div class="check-text"><strong>Wireless network discovery</strong> — rogue APs, WPS vulnerabilities, network segmentation</div>
+          </div>
+          <div class="check-item">
+            <div class="check-icon">
+              <svg viewBox="0 0 12 12" fill="none" stroke="var(--navy)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="1.5 6 4.5 9 10.5 3"/></svg>
+            </div>
+            <div class="check-text"><strong>Cleartext protocol detection</strong> — catches unencrypted traffic on your own network</div>
+          </div>
+          <div class="check-item">
+            <div class="check-icon">
+              <svg viewBox="0 0 12 12" fill="none" stroke="var(--navy)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="1.5 6 4.5 9 10.5 3"/></svg>
+            </div>
+            <div class="check-text"><strong>Plain-English written report</strong> with severity rating for every finding</div>
+          </div>
+          <div class="check-item">
+            <div class="check-icon">
+              <svg viewBox="0 0 12 12" fill="none" stroke="var(--navy)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="1.5 6 4.5 9 10.5 3"/></svg>
+            </div>
+            <div class="check-text"><strong>Executive summary</strong> you can share with your team or board</div>
+          </div>
+        </div>
+        <div class="included-cta">
+          <a href="#cta-bottom" class="btn-primary">Book for $100 →</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════
+     WHO WE PROTECT
+══════════════════════════════════════════════════════════ -->
+<section id="protect">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-label fade-up">Who We Protect</div>
+      <h2 class="section-h2 fade-up delay-1">We specialize in businesses<br>that handle sensitive customer data</h2>
+    </div>
+    <div class="protect-grid">
+
+      <div class="protect-tile fade-up">
+        <div class="protect-emoji">🏥</div>
+        <div class="protect-name">Medical &amp; Dental Offices</div>
+        <div class="protect-note">HIPAA fines up to $50,000 per incident</div>
+      </div>
+
+      <div class="protect-tile fade-up delay-1">
+        <div class="protect-emoji">⚖️</div>
+        <div class="protect-name">Law Firms</div>
+        <div class="protect-note">Client confidentiality and bar association obligations</div>
+      </div>
+
+      <div class="protect-tile fade-up delay-2">
+        <div class="protect-emoji">📊</div>
+        <div class="protect-name">Accounting &amp; CPA Firms</div>
+        <div class="protect-note">Tax records and sensitive financial data</div>
+      </div>
+
+      <div class="protect-tile fade-up delay-3">
+        <div class="protect-emoji">🏠</div>
+        <div class="protect-name">Real Estate Offices</div>
+        <div class="protect-note">Transaction data and wire fraud targets</div>
+      </div>
+
+      <div class="protect-tile fade-up">
+        <div class="protect-emoji">🍽️</div>
+        <div class="protect-name">Restaurants</div>
+        <div class="protect-note">PCI-DSS card processing compliance</div>
+      </div>
+
+      <div class="protect-tile fade-up delay-1">
+        <div class="protect-emoji">🚗</div>
+        <div class="protect-name">Auto Dealers</div>
+        <div class="protect-note">DMV and financing data exposure</div>
+      </div>
+
+      <div class="protect-tile fade-up delay-2">
+        <div class="protect-emoji">🛍️</div>
+        <div class="protect-name">Retail with POS Systems</div>
+        <div class="protect-note">Customer payment data and cardholder records</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════
+     SAFE BY DESIGN
+══════════════════════════════════════════════════════════ -->
+<section id="safe">
+  <div class="container">
+    <div class="section-label fade-up">Our Promise</div>
+    <h2 class="safe-h2 fade-up delay-1">Safe by Design</h2>
+    <div class="safe-grid">
+
+      <div class="safe-item fade-up">
+        <div class="safe-icon">
+          <svg viewBox="0 0 26 26" fill="none" stroke="var(--amber)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M13 2L3 7v6c0 5.55 4.08 10.74 10 12 5.92-1.26 10-6.45 10-12V7L13 2z"/>
+            <polyline points="9 12 11.5 14.5 17 9"/>
+          </svg>
+        </div>
+        <div class="safe-title">Read-only scan</div>
+        <p class="safe-body">We observe — we don't write, change, or touch anything on your network. Our tools are entirely passive and non-intrusive.</p>
+      </div>
+
+      <div class="safe-item fade-up delay-1">
+        <div class="safe-icon">
+          <svg viewBox="0 0 26 26" fill="none" stroke="var(--amber)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="5" y="11" width="16" height="12" rx="2"/><path d="M9 11V7a4 4 0 0 1 8 0v4"/>
+            <circle cx="13" cy="17" r="1.5" fill="var(--amber)" stroke="none"/>
+          </svg>
+        </div>
+        <div class="safe-title">No access to your data</div>
+        <p class="safe-body">We look at your network's security posture — not your files, emails, customer records, or any business materials.</p>
+      </div>
+
+      <div class="safe-item fade-up delay-2">
+        <div class="safe-icon">
+          <svg viewBox="0 0 26 26" fill="none" stroke="var(--amber)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M17.94 17.94A10.07 10.07 0 0 1 13 19C7 19 2.73 14 1 13c.78-1.22 2.38-3.25 4.56-4.94"/>
+            <path d="M9.9 4.24C10.56 4.08 11.27 4 12 4c6 0 10.27 5 12 6-1.01 1.58-2.82 3.67-5.11 5.1"/>
+            <line x1="2" y1="2" x2="24" y2="24"/>
+          </svg>
+        </div>
+        <div class="safe-title">Totally confidential</div>
+        <p class="safe-body">Your report is yours alone. We never share, publish, or reference your findings with anyone — ever. We're legally bound to privacy.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════
+     TESTIMONIALS
+══════════════════════════════════════════════════════════ -->
+<section id="testimonials">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-label fade-up">What People Say</div>
+      <h2 class="section-h2 fade-up delay-1">Real results from real businesses</h2>
+    </div>
+    <div class="testimonials-grid">
+
+      <div class="testimonial-card fade-up">
+        <div class="quote-mark">"</div>
+        <div class="stars">
+          <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
+        </div>
+        <p class="testimonial-text">We had no idea our guest WiFi was sharing the same network as our payment terminals. One scan changed everything. We fixed it in a day — before it became a real problem.</p>
+        <div class="testimonial-author">
+          <div class="author-avatar">🍽️</div>
+          <div class="author-info">
+            <div class="author-name">Restaurant Owner</div>
+            <div class="author-role">Chicago, IL</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="testimonial-card fade-up delay-1">
+        <div class="quote-mark">"</div>
+        <div class="stars">
+          <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
+        </div>
+        <p class="testimonial-text">Worth every penny. The report was actually something I could read and understand — not a 40-page document full of acronyms. I knew exactly what was at risk and what to do.</p>
+        <div class="testimonial-author">
+          <div class="author-avatar">🏥</div>
+          <div class="author-info">
+            <div class="author-name">Dental Office Manager</div>
+            <div class="author-role">Phoenix, AZ</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════
+     FAQ
+══════════════════════════════════════════════════════════ -->
+<section id="faq">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-label fade-up">FAQ</div>
+      <h2 class="section-h2 fade-up delay-1">Common Questions</h2>
+    </div>
+    <div class="faq-list fade-up delay-1">
+
+      <div class="faq-item">
+        <button class="faq-question">Will this disrupt my business?</button>
+        <div class="faq-answer"><div class="faq-answer-inner">No. Our scan is entirely passive — it listens and observes traffic on your network without sending any requests that would interrupt service. Your team keeps working normally throughout the 15–30 minutes we're on site.</div></div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question">Do you install anything on our computers?</button>
+        <div class="faq-answer"><div class="faq-answer-inner">No. We bring our own scanning equipment. Nothing is installed on your computers, servers, or network devices. We connect to your WiFi, run our scan, and take everything with us when we leave.</div></div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question">What if you find a serious problem?</button>
+        <div class="faq-answer"><div class="faq-answer-inner">We explain it in plain English, walk through your options, and give you a clear priority order. No action is ever taken without your explicit approval. Many findings can be resolved by your existing IT provider using our report as a guide.</div></div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question">What do we actually get?</button>
+        <div class="faq-answer"><div class="faq-answer-inner">You get a clear report before we leave — every finding in plain English, a severity rating (Critical / Medium / Low), recommended next steps, and an executive summary you can share with your team or board.</div></div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question">How is this different from our IT company?</button>
+        <div class="faq-answer"><div class="faq-answer-inner">Your IT company keeps things running day-to-day — that's their job. We independently verify that your network is actually secure, not just operational. Think of it as a second opinion from someone with no incentive to downplay what they find.</div></div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question">Will you see my files or customer data?</button>
+        <div class="faq-answer"><div class="faq-answer-inner">No. We scan your network infrastructure — open ports, device configurations, wireless access points, and known vulnerabilities. We cannot and do not access your files, emails, documents, customer records, or any business data.</div></div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question">How long does it take?</button>
+        <div class="faq-answer"><div class="faq-answer-inner">The scan takes 15–30 minutes. We then walk you through everything we found before we leave.</div></div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question">Do I have to install anything?</button>
+        <div class="faq-answer"><div class="faq-answer-inner">No. We connect our own equipment to your WiFi network, run the scan, generate your report, and disconnect. You don't need to prepare anything or install any software before or after our visit.</div></div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question">Is this a sales pitch for something bigger?</button>
+        <div class="faq-answer"><div class="faq-answer-inner">No. The sole purpose of the checkup is to give you an honest picture of your network's security. There's no obligation to buy anything else. If you need help fixing what we find, we'll point you in the right direction — whether that's your current IT provider or someone else.</div></div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question">Why do this if everything seems fine?</button>
+        <div class="faq-answer"><div class="faq-answer-inner">Network vulnerabilities almost never announce themselves — they're invisible until something stops working or you find out you've been breached. A quick check every 12–18 months catches configuration drift, newly discovered CVEs, and changes your team may not have flagged. An ounce of prevention, etc.</div></div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════
+     BOTTOM CTA
+══════════════════════════════════════════════════════════ -->
+<section id="cta-bottom">
+  <div class="container">
+    <div class="cta-bottom-inner">
+      <div class="section-label fade-up" style="color:var(--amber)">Get Started Today</div>
+      <h2 class="cta-h2 fade-up delay-1">Ready to Know<br>Where You Stand?</h2>
+      <p class="cta-sub fade-up delay-2">Book a Security Snapshot for $100. If we find nothing, you have peace of mind. If we find something, you'll be very glad you know.</p>
+      <div class="fade-up delay-3">
+        <a href="mailto:hello@networkscan.ai" class="btn-primary large">Schedule Your Checkup →</a>
+        <p class="cta-bottom-disclaimer">No disruption. No obligation. Plain English results before we leave.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ═══════════════════════════════════════════════════════════
+     FOOTER
+══════════════════════════════════════════════════════════ -->
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+
+      <div>
+        <div class="footer-logo">
+          <img src="/networkscan-mark.png" alt="Network Scan" style="height:36px;width:auto;display:block;filter:brightness(0) invert(1);" />
+          <span class="logo-wordmark">Network Scan</span>
+        </div>
+        <p class="footer-tagline">Network security you can actually understand.<br>For businesses that can't afford surprises.</p>
+      </div>
+
+      <div>
+        <div class="footer-nav-title">Navigation</div>
+        <div class="footer-nav-links">
+          <a href="#how">Services</a>
+          <a href="#how">How It Works</a>
+          <a href="#stats">Why It Matters</a>
+          <a href="/blog">Blog</a>
+        </div>
+      </div>
+
+      <div>
+        <div class="footer-contact-title">Questions?</div>
+        <p class="footer-contact-text">
+          Email <strong style="color:rgba(255,255,255,.75)">hello@networkscan.ai</strong><br><br>
+          We typically respond within a few hours during business days.
+        </p>
+      </div>
+
+    </div>
+
+    <div class="footer-bottom">
+      <div class="footer-copyright">© 2025 NetworkScan.AI · All rights reserved.</div>
+      <div class="footer-legal">
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Service</a>
+        <a href="#">NDA / Confidentiality</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</Base>
+
+<style>
+  /* ═══════════════════════════════════════════════════════════
+     1. NAV
+  ══════════════════════════════════════════════════════════ */
+  #navbar {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 1000;
+    padding: 0;
+    transition: background var(--transition), box-shadow var(--transition), padding var(--transition);
+  }
+  #navbar.scrolled {
+    background: var(--navy);
+    box-shadow: 0 2px 20px rgba(0,0,0,.25);
+  }
+  .nav-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 68px;
+    padding-inline: 24px;
+    max-width: var(--max-w);
+    margin-inline: auto;
+  }
+  .nav-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--white);
+    letter-spacing: .08em;
+    text-transform: uppercase;
+  }
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 36px;
+  }
+  .nav-links a {
+    color: rgba(255,255,255,.82);
+    font-size: 14px;
+    font-weight: 500;
+    transition: color var(--transition);
+  }
+  .nav-links a:hover { color: var(--white); }
+  .nav-cta { margin-left: 20px; }
+  .hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    padding: 6px;
+    background: none;
+    border: none;
+  }
+  .hamburger span {
+    display: block;
+    width: 24px;
+    height: 2px;
+    background: var(--white);
+    border-radius: 2px;
+    transition: all 0.3s ease;
+  }
+  .mobile-menu {
+    display: none;
+    flex-direction: column;
+    gap: 0;
+    background: var(--navy);
+    padding: 0 24px 20px;
+  }
+  .mobile-menu.open { display: flex; }
+  .mobile-menu a {
+    color: rgba(255,255,255,.85);
+    font-size: 16px;
+    font-weight: 500;
+    padding: 14px 0;
+    border-bottom: 1px solid rgba(255,255,255,.08);
+    transition: color var(--transition);
+  }
+  .mobile-menu a:last-child { border-bottom: none; }
+  .mobile-menu a:hover { color: var(--amber); }
+  .mobile-menu .btn-primary { margin-top: 16px; justify-content: center; }
+  @media (max-width: 768px) {
+    .nav-links, .nav-cta { display: none; }
+    .hamburger { display: flex; }
+  }
+
+  /* ═══════════════════════════════════════════════════════════
+     2. HERO
+  ══════════════════════════════════════════════════════════ */
+  #hero {
+    background: var(--navy);
+    padding: 140px 0 100px;
+    overflow: hidden;
+    position: relative;
+  }
+  #hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 700px 500px at 70% 50%, rgba(232,168,48,.07) 0%, transparent 70%),
+      radial-gradient(ellipse 500px 400px at 10% 80%, rgba(255,255,255,.03) 0%, transparent 60%);
+    pointer-events: none;
+  }
+  .hero-inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 64px;
+    align-items: center;
+  }
+  .hero-text { position: relative; z-index: 1; }
+  .hero-eyebrow {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--amber);
+    margin-bottom: 20px;
+    padding: 6px 12px;
+    border: 1px solid rgba(232,168,48,.3);
+    border-radius: 4px;
+    background: rgba(232,168,48,.06);
+  }
+  .hero-h1 {
+    font-size: clamp(38px, 5vw, 58px);
+    font-weight: 700;
+    color: var(--white);
+    line-height: 1.12;
+    letter-spacing: -.5px;
+    margin-bottom: 24px;
+  }
+  .hero-sub {
+    font-size: 18px;
+    color: rgba(255,255,255,.72);
+    line-height: 1.65;
+    margin-bottom: 40px;
+    max-width: 520px;
+  }
+  .hero-cta-group {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+  .hero-disclaimer {
+    font-size: 13px;
+    color: rgba(255,255,255,.48);
+    line-height: 1.5;
+  }
+
+  /* Mock report card */
+  .hero-visual {
+    position: relative;
+    z-index: 1;
+  }
+  .report-card {
+    background: #162035;
+    border: 1px solid rgba(255,255,255,.09);
+    border-radius: 14px;
+    padding: 28px;
+    box-shadow: 0 24px 60px rgba(0,0,0,.5), 0 0 0 1px rgba(255,255,255,.04);
+    position: relative;
+    overflow: hidden;
+  }
+  .report-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--amber), #f0c060);
+  }
+  .report-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 22px;
+  }
+  .report-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--white);
+    letter-spacing: .2px;
+  }
+  .report-meta {
+    font-size: 11px;
+    color: rgba(255,255,255,.35);
+    margin-top: 2px;
+  }
+  .report-badge {
+    background: rgba(232,168,48,.15);
+    color: var(--amber);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 20px;
+    border: 1px solid rgba(232,168,48,.25);
+  }
+  .score-block {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    background: rgba(255,255,255,.04);
+    border-radius: 10px;
+    padding: 16px;
+    margin-bottom: 22px;
+    border: 1px solid rgba(255,255,255,.06);
+  }
+  .score-dial {
+    width: 58px;
+    height: 58px;
+    flex-shrink: 0;
+  }
+  .score-label {
+    font-size: 11px;
+    color: rgba(255,255,255,.4);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .score-value {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--amber);
+    line-height: 1;
+    margin: 2px 0;
+  }
+  .score-sub {
+    font-size: 11px;
+    color: rgba(255,255,255,.35);
+  }
+  .progress-row { margin-bottom: 6px; }
+  .progress-label-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    color: rgba(255,255,255,.45);
+    margin-bottom: 4px;
+  }
+  .progress-bar {
+    height: 5px;
+    background: rgba(255,255,255,.08);
+    border-radius: 3px;
+    overflow: hidden;
+    margin-bottom: 14px;
+  }
+  .progress-fill {
+    height: 100%;
+    border-radius: 3px;
+  }
+  .findings-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,.35);
+    margin-bottom: 12px;
+  }
+  .finding {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 12px 14px;
+    border-radius: 8px;
+    margin-bottom: 8px;
+    border: 1px solid transparent;
+  }
+  .finding.critical { background: rgba(224,82,82,.1); border-color: rgba(224,82,82,.2); }
+  .finding.medium { background: rgba(232,168,48,.08); border-color: rgba(232,168,48,.18); }
+  .finding.low { background: rgba(52,201,122,.07); border-color: rgba(52,201,122,.16); }
+  .finding-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    margin-top: 4px;
+  }
+  .finding.critical .finding-dot { background: var(--red); }
+  .finding.medium  .finding-dot { background: var(--amber); }
+  .finding.low     .finding-dot { background: var(--green); }
+  .finding-name {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--white);
+  }
+  .finding-desc {
+    font-size: 11px;
+    color: rgba(255,255,255,.4);
+    margin-top: 1px;
+  }
+  .finding-tag {
+    margin-left: auto;
+    flex-shrink: 0;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .8px;
+    padding: 2px 7px;
+    border-radius: 4px;
+  }
+  .finding.critical .finding-tag { background: rgba(224,82,82,.2); color: #f08080; }
+  .finding.medium  .finding-tag { background: rgba(232,168,48,.2); color: var(--amber); }
+  .finding.low     .finding-tag { background: rgba(52,201,122,.18); color: #5dd99a; }
+  .report-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 18px;
+    padding-top: 16px;
+    border-top: 1px solid rgba(255,255,255,.07);
+  }
+  .report-footer-label { font-size: 11px; color: rgba(255,255,255,.28); }
+  .report-footer-status {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--amber);
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .status-dot {
+    width: 6px;
+    height: 6px;
+    background: var(--green);
+    border-radius: 50%;
+    animation: pulse-dot 2s infinite;
+  }
+  @keyframes pulse-dot {
+    0%, 100% { opacity: 1; }
+    50% { opacity: .4; }
+  }
+  @media (max-width: 768px) {
+    #hero { padding: 110px 0 70px; }
+    .hero-inner {
+      grid-template-columns: 1fr;
+      gap: 40px;
+    }
+    .hero-visual { order: 1; max-width: 100%; }
+    .report-card { padding: 20px; }
+  }
+
+  /* ═══════════════════════════════════════════════════════════
+     3. STATS BAR
+  ══════════════════════════════════════════════════════════ */
+  #stats {
+    background: var(--navy);
+    padding: 60px 0;
+    border-top: 1px solid rgba(255,255,255,.06);
+  }
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+  }
+  .stat-item {
+    text-align: center;
+    padding: 12px 24px;
+    position: relative;
+  }
+  .stat-item + .stat-item::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 10%; bottom: 10%;
+    width: 1px;
+    background: rgba(255,255,255,.12);
+  }
+  .stat-number {
+    font-size: clamp(34px, 4vw, 48px);
+    font-weight: 700;
+    color: var(--amber);
+    line-height: 1.1;
+    letter-spacing: -.5px;
+  }
+  .stat-label {
+    font-size: 14px;
+    color: rgba(255,255,255,.6);
+    margin-top: 8px;
+    line-height: 1.4;
+  }
+  @media (max-width: 600px) {
+    .stats-grid { grid-template-columns: 1fr; gap: 32px; }
+    .stat-item + .stat-item::before { display: none; }
+  }
+
+  /* ═══════════════════════════════════════════════════════════
+     4. HOW IT WORKS
+  ══════════════════════════════════════════════════════════ */
+  #how {
+    background: var(--white);
+    padding: 100px 0;
+  }
+  .section-header {
+    text-align: center;
+    margin-bottom: 60px;
+  }
+  .section-h2 {
+    font-size: clamp(28px, 3.5vw, 40px);
+    font-weight: 700;
+    color: var(--navy);
+    line-height: 1.18;
+    letter-spacing: -.3px;
+  }
+  .section-sub {
+    font-size: 17px;
+    color: var(--gray-600);
+    margin-top: 14px;
+    max-width: 560px;
+    margin-inline: auto;
+  }
+  .steps-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 28px;
+  }
+  .step-card {
+    background: var(--white);
+    border: 1px solid var(--gray-100);
+    border-radius: 12px;
+    padding: 36px 28px;
+    box-shadow: var(--shadow-md);
+    position: relative;
+    transition: transform var(--transition), box-shadow var(--transition);
+  }
+  .step-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+  }
+  .step-num {
+    font-size: 72px;
+    font-weight: 700;
+    color: var(--gray-100);
+    line-height: 1;
+    position: absolute;
+    top: 20px;
+    right: 24px;
+    user-select: none;
+  }
+  .step-icon {
+    width: 48px;
+    height: 48px;
+    background: rgba(232,168,48,.12);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+  .step-icon svg { width: 24px; height: 24px; }
+  .step-title {
+    font-size: 19px;
+    font-weight: 700;
+    color: var(--navy);
+    margin-bottom: 12px;
+    line-height: 1.2;
+  }
+  .step-body {
+    font-size: 15px;
+    color: var(--gray-600);
+    line-height: 1.65;
+  }
+  @media (max-width: 768px) {
+    .steps-grid { grid-template-columns: 1fr; gap: 20px; }
+  }
+
+  /* ═══════════════════════════════════════════════════════════
+     5. WHAT'S INCLUDED
+  ══════════════════════════════════════════════════════════ */
+  #included {
+    background: var(--gray-50);
+    padding: 100px 0;
+  }
+  .included-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 64px;
+    align-items: center;
+  }
+  .included-h2 {
+    font-size: clamp(26px, 3vw, 36px);
+    font-weight: 700;
+    color: var(--navy);
+    line-height: 1.18;
+    letter-spacing: -.2px;
+    margin-bottom: 20px;
+  }
+  .included-p {
+    font-size: 16px;
+    color: var(--gray-600);
+    line-height: 1.7;
+  }
+  .checklist-card {
+    background: var(--white);
+    border-radius: 12px;
+    padding: 32px;
+    box-shadow: var(--shadow-md);
+    border: 1px solid var(--gray-100);
+  }
+  .check-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--gray-100);
+  }
+  .check-item:last-child { border-bottom: none; }
+  .check-icon {
+    width: 22px;
+    height: 22px;
+    background: var(--amber);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .check-icon svg { width: 12px; height: 12px; }
+  .check-text {
+    font-size: 15px;
+    color: var(--gray-800);
+    line-height: 1.5;
+  }
+  .check-text strong {
+    font-weight: 600;
+    color: var(--navy);
+  }
+  .included-cta { margin-top: 28px; }
+  @media (max-width: 768px) {
+    .included-grid { grid-template-columns: 1fr; gap: 40px; }
+  }
+
+  /* ═══════════════════════════════════════════════════════════
+     6. WHO WE PROTECT
+  ══════════════════════════════════════════════════════════ */
+  #protect {
+    background: var(--white);
+    padding: 100px 0;
+  }
+  .protect-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 18px;
+    margin-top: 48px;
+  }
+  .protect-tile {
+    background: var(--white);
+    border: 1px solid var(--gray-100);
+    border-radius: 12px;
+    padding: 24px 20px;
+    box-shadow: var(--shadow-sm);
+    transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition);
+    cursor: default;
+  }
+  .protect-tile:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-md);
+    border-color: rgba(232,168,48,.3);
+  }
+  .protect-emoji { font-size: 32px; margin-bottom: 12px; line-height: 1; }
+  .protect-name {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--navy);
+    margin-bottom: 6px;
+    line-height: 1.2;
+  }
+  .protect-note {
+    font-size: 12px;
+    color: var(--gray-600);
+    line-height: 1.45;
+  }
+  @media (max-width: 1100px) {
+    .protect-grid { grid-template-columns: repeat(3, 1fr); }
+  }
+  @media (max-width: 768px) {
+    .protect-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 480px) {
+    .protect-grid { grid-template-columns: 1fr; }
+  }
+
+  /* ═══════════════════════════════════════════════════════════
+     7. SAFE BY DESIGN
+  ══════════════════════════════════════════════════════════ */
+  #safe {
+    background: var(--navy);
+    padding: 100px 0;
+  }
+  .safe-h2 {
+    font-size: clamp(28px, 3.5vw, 40px);
+    font-weight: 700;
+    color: var(--white);
+    line-height: 1.18;
+    letter-spacing: -.3px;
+    margin-bottom: 60px;
+  }
+  .safe-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px;
+  }
+  .safe-item {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    padding: 36px 28px;
+    background: rgba(255,255,255,.04);
+    border: 1px solid rgba(255,255,255,.08);
+    border-radius: 12px;
+    transition: background var(--transition);
+  }
+  .safe-item:hover { background: rgba(255,255,255,.07); }
+  .safe-icon {
+    width: 52px;
+    height: 52px;
+    background: rgba(232,168,48,.12);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .safe-icon svg { width: 26px; height: 26px; }
+  .safe-title { font-size: 18px; font-weight: 700; color: var(--white); line-height: 1.2; }
+  .safe-body { font-size: 15px; color: rgba(255,255,255,.58); line-height: 1.65; }
+  @media (max-width: 768px) {
+    .safe-grid { grid-template-columns: 1fr; gap: 20px; }
+  }
+
+  /* ═══════════════════════════════════════════════════════════
+     8. TESTIMONIALS
+  ══════════════════════════════════════════════════════════ */
+  #testimonials {
+    background: var(--gray-50);
+    padding: 100px 0;
+  }
+  .testimonials-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 28px;
+    margin-top: 48px;
+  }
+  .testimonial-card {
+    background: var(--white);
+    border-radius: 12px;
+    padding: 36px 32px;
+    box-shadow: var(--shadow-md);
+    border-left: 4px solid var(--navy);
+    position: relative;
+  }
+  .quote-mark {
+    font-size: 80px;
+    line-height: 1;
+    color: var(--gray-100);
+    font-family: Georgia, serif;
+    position: absolute;
+    top: 16px;
+    left: 24px;
+    user-select: none;
+    pointer-events: none;
+  }
+  .testimonial-text {
+    font-size: 17px;
+    color: var(--gray-800);
+    line-height: 1.7;
+    font-style: italic;
+    padding-top: 32px;
+    position: relative;
+    z-index: 1;
+  }
+  .testimonial-author {
+    margin-top: 24px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .author-avatar {
+    width: 44px;
+    height: 44px;
+    background: var(--navy);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+  .author-name { font-size: 14px; font-weight: 700; color: var(--navy); }
+  .author-role { font-size: 13px; color: var(--gray-600); }
+  .stars { display: flex; gap: 2px; margin-bottom: 10px; }
+  .star { color: var(--amber); font-size: 15px; }
+  @media (max-width: 768px) {
+    .testimonials-grid {
+      grid-template-columns: 1fr;
+      display: flex;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      gap: 20px;
+      padding-bottom: 20px;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+    .testimonials-grid::-webkit-scrollbar { display: none; }
+    .testimonial-card {
+      min-width: 85vw;
+      scroll-snap-align: start;
+      flex-shrink: 0;
+    }
+  }
+
+  /* ═══════════════════════════════════════════════════════════
+     9. FAQ
+  ══════════════════════════════════════════════════════════ */
+  #faq {
+    background: var(--white);
+    padding: 100px 0;
+  }
+  .faq-list {
+    margin-top: 48px;
+    max-width: 760px;
+    margin-inline: auto;
+  }
+  .faq-item { border-bottom: 1px solid var(--gray-100); }
+  .faq-item:first-child { border-top: 1px solid var(--gray-100); }
+  .faq-question {
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--navy);
+    padding: 20px 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    width: 100%;
+    text-align: left;
+    background: none;
+    border: none;
+    cursor: pointer;
+  }
+  .faq-question::after {
+    content: '+';
+    font-size: 22px;
+    font-weight: 300;
+    color: var(--amber);
+    flex-shrink: 0;
+    transition: transform 0.2s ease;
+  }
+  .faq-item.open .faq-question::after {
+    transform: rotate(45deg);
+  }
+  .faq-answer {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+  }
+  .faq-item.open .faq-answer {
+    max-height: 400px;
+  }
+  .faq-answer-inner {
+    font-size: 15px;
+    color: var(--gray-600);
+    line-height: 1.7;
+    padding-bottom: 22px;
+  }
+
+  /* ═══════════════════════════════════════════════════════════
+     10. BOTTOM CTA
+  ══════════════════════════════════════════════════════════ */
+  #cta-bottom {
+    background: var(--navy);
+    padding: 100px 0;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  #cta-bottom::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 800px 400px at 50% 50%, rgba(232,168,48,.06) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .cta-bottom-inner { position: relative; z-index: 1; }
+  .cta-h2 {
+    font-size: clamp(30px, 4vw, 48px);
+    font-weight: 700;
+    color: var(--white);
+    line-height: 1.15;
+    letter-spacing: -.3px;
+    margin-bottom: 20px;
+  }
+  .cta-sub {
+    font-size: 18px;
+    color: rgba(255,255,255,.65);
+    line-height: 1.65;
+    max-width: 560px;
+    margin-inline: auto;
+    margin-bottom: 40px;
+  }
+  .cta-bottom-disclaimer {
+    margin-top: 20px;
+    font-size: 13px;
+    color: rgba(255,255,255,.38);
+  }
+
+  /* ═══════════════════════════════════════════════════════════
+     11. FOOTER
+  ══════════════════════════════════════════════════════════ */
+  footer {
+    background: var(--navy-dark);
+    padding: 60px 0 0;
+  }
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 48px;
+    padding-bottom: 48px;
+  }
+  .footer-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--white);
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  .footer-tagline { font-size: 14px; color: rgba(255,255,255,.4); line-height: 1.5; }
+  .footer-nav-title {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--amber);
+    margin-bottom: 18px;
+  }
+  .footer-nav-links { display: flex; flex-direction: column; gap: 10px; }
+  .footer-nav-links a { font-size: 14px; color: rgba(255,255,255,.55); transition: color var(--transition); }
+  .footer-nav-links a:hover { color: var(--white); }
+  .footer-contact-title {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--amber);
+    margin-bottom: 18px;
+  }
+  .footer-contact-text { font-size: 14px; color: rgba(255,255,255,.55); line-height: 1.7; }
+  .footer-bottom {
+    border-top: 1px solid rgba(255,255,255,.07);
+    padding: 20px 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .footer-copyright { font-size: 13px; color: rgba(255,255,255,.28); }
+  .footer-legal { display: flex; gap: 24px; }
+  .footer-legal a { font-size: 13px; color: rgba(255,255,255,.28); transition: color var(--transition); }
+  .footer-legal a:hover { color: rgba(255,255,255,.55); }
+  @media (max-width: 768px) {
+    .footer-grid { grid-template-columns: 1fr; gap: 36px; }
+    .footer-bottom { flex-direction: column; align-items: flex-start; }
+  }
+
+  /* ─── General Section Spacing ───────────────────────────── */
+  @media (max-width: 768px) {
+    #hero, #how, #included, #protect, #safe, #testimonials, #faq, #cta-bottom { padding-top: 70px; padding-bottom: 70px; }
+    #stats { padding: 48px 0; }
+  }
+</style>
+
+<script>
+  /* ── Nav scroll behavior ─────────────────────────────── */
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 20) {
+      navbar?.classList.add('scrolled');
+    } else {
+      navbar?.classList.remove('scrolled');
+    }
+  }, { passive: true });
+
+  /* ── Mobile menu ─────────────────────────────────────── */
+  function toggleMenu(btn: HTMLElement) {
+    const menu = document.getElementById('mobileMenu');
+    if (!menu) return;
+    const open = menu.classList.toggle('open');
+    btn.setAttribute('aria-expanded', String(open));
+    const spans = btn.querySelectorAll('span');
+    if (open) {
+      (spans[0] as HTMLElement).style.transform = 'translateY(7px) rotate(45deg)';
+      (spans[1] as HTMLElement).style.opacity   = '0';
+      (spans[2] as HTMLElement).style.transform = 'translateY(-7px) rotate(-45deg)';
+    } else {
+      spans.forEach(s => {
+        (s as HTMLElement).style.transform = '';
+        (s as HTMLElement).style.opacity   = '';
+      });
+    }
+  }
+  function closeMobileMenu() {
+    const menu = document.getElementById('mobileMenu');
+    menu?.classList.remove('open');
+    const btn = document.querySelector('.hamburger') as HTMLElement | null;
+    if (btn) {
+      btn.setAttribute('aria-expanded', 'false');
+      btn.querySelectorAll('span').forEach(s => {
+        (s as HTMLElement).style.transform = '';
+        (s as HTMLElement).style.opacity   = '';
+      });
+    }
+  }
+  (window as any).toggleMenu = toggleMenu;
+  (window as any).closeMobileMenu = closeMobileMenu;
+
+  /* ── FAQ Accordion ───────────────────────────────────── */
+  document.querySelectorAll('.faq-item').forEach(item => {
+    const btn = item.querySelector('.faq-question');
+    if (btn) {
+      btn.addEventListener('click', () => {
+        const isOpen = item.classList.contains('open');
+        document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+        if (!isOpen) item.classList.add('open');
+      });
+    }
+  });
+
+  /* ── IntersectionObserver fade-in ────────────────────── */
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, {
+    threshold: 0.05,
+    rootMargin: '0px 0px 0px 0px'
+  });
+
+  document.querySelectorAll('.fade-up').forEach(el => {
+    const rect = el.getBoundingClientRect();
+    if (rect.top < window.innerHeight && rect.bottom > 0) {
+      el.classList.add('visible');
+    } else {
+      observer.observe(el);
+    }
+  });
+
+  /* ── Smooth scroll for anchor links ─────────────────── */
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      const href = (a as HTMLAnchorElement).getAttribute('href');
+      if (!href) return;
+      const target = document.querySelector(href);
+      if (target) {
+        e.preventDefault();
+        const offset = 72;
+        const top = target.getBoundingClientRect().top + window.scrollY - offset;
+        window.scrollTo({ top, behavior: 'smooth' });
+      }
+    });
+  });
+</script>

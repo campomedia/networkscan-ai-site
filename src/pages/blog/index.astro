@@ -1,0 +1,410 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+
+const posts = (await getCollection('blog')).sort((a, b) => {
+  return new Date(b.data.publishedDate).getTime() - new Date(a.data.publishedDate).getTime();
+});
+---
+
+<Base
+  title="Security Insights for Small Business | NetworkScan.AI Blog"
+  description="Practical cybersecurity guides for small business owners. DMARC, email security, network scanning — written in plain English."
+>
+  <!-- Nav -->
+  <header id="blog-navbar" class="blog-nav scrolled">
+    <div class="nav-inner">
+      <a href="/" class="nav-logo">
+        <img src="/networkscan-mark.png" alt="NetworkScan.AI" style="height:36px;width:auto;display:block;filter:brightness(0) invert(1);" />
+        <span class="logo-wordmark">Network Scan</span>
+      </a>
+      <nav class="nav-links" aria-label="Main navigation">
+        <a href="/#how">Services</a>
+        <a href="/#how">How It Works</a>
+        <a href="/#stats">Why It Matters</a>
+        <a href="/blog" style="color:var(--amber)">Blog</a>
+      </nav>
+      <a href="/#cta-bottom" class="btn-primary nav-cta">Book a $100 Checkup →</a>
+      <button class="hamburger" aria-label="Open menu" aria-expanded="false" id="hamburgerBtn">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+    <div class="mobile-menu" id="mobileMenu" role="navigation" aria-label="Mobile navigation">
+      <a href="/#how">Services</a>
+      <a href="/#how">How It Works</a>
+      <a href="/#stats">Why It Matters</a>
+      <a href="/blog">Blog</a>
+      <a href="/#cta-bottom" class="btn-primary">Book a $100 Checkup →</a>
+    </div>
+  </header>
+
+  <!-- Blog Header -->
+  <section class="blog-hero">
+    <div class="container">
+      <div class="section-label">Security Insights</div>
+      <h1 class="blog-hero-title">Security Insights for Small Business</h1>
+      <p class="blog-hero-sub">Practical cybersecurity guides written in plain English. No jargon, no scare tactics — just what you need to know to protect your business.</p>
+    </div>
+  </section>
+
+  <!-- Post Grid -->
+  <section class="blog-listing">
+    <div class="container">
+      <div class="post-grid">
+        {posts.map(post => {
+          const date = new Date(post.data.publishedDate);
+          const formattedDate = date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+          const readingTime = post.data.readingTime ?? 8;
+          const excerpt = post.data.description.slice(0, 160);
+          return (
+            <a href={`/blog/${post.slug}`} class="post-card">
+              <div class="post-card-tags">
+                {post.data.tags.slice(0, 2).map(tag => (
+                  <span class="tag-pill">{tag}</span>
+                ))}
+              </div>
+              <h2 class="post-card-title">{post.data.title}</h2>
+              <p class="post-card-excerpt">{excerpt}…</p>
+              <div class="post-card-meta">
+                <div class="post-card-author">
+                  <div class="author-dot">{post.data.author.charAt(0)}</div>
+                  <span>{post.data.author}</span>
+                </div>
+                <div class="post-card-date-time">
+                  <time datetime={post.data.publishedDate}>{formattedDate}</time>
+                  <span class="meta-dot">·</span>
+                  <span>{readingTime} min read</span>
+                </div>
+              </div>
+              <div class="post-card-read">Read article →</div>
+            </a>
+          );
+        })}
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <div class="footer-logo">
+            <img src="/networkscan-mark.png" alt="Network Scan" style="height:36px;width:auto;display:block;filter:brightness(0) invert(1);" />
+            <span class="logo-wordmark">Network Scan</span>
+          </div>
+          <p class="footer-tagline">Network security you can actually understand.<br>For businesses that can't afford surprises.</p>
+        </div>
+        <div>
+          <div class="footer-nav-title">Navigation</div>
+          <div class="footer-nav-links">
+            <a href="/#how">Services</a>
+            <a href="/#how">How It Works</a>
+            <a href="/#stats">Why It Matters</a>
+            <a href="/blog">Blog</a>
+          </div>
+        </div>
+        <div>
+          <div class="footer-contact-title">Questions?</div>
+          <p class="footer-contact-text">
+            Email <strong style="color:rgba(255,255,255,.75)">hello@networkscan.ai</strong><br><br>
+            We typically respond within a few hours during business days.
+          </p>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <div class="footer-copyright">© 2025 NetworkScan.AI · All rights reserved.</div>
+        <div class="footer-legal">
+          <a href="#">Privacy Policy</a>
+          <a href="#">Terms of Service</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+</Base>
+
+<style>
+  /* Nav */
+  #blog-navbar {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 1000;
+    background: var(--navy);
+    box-shadow: 0 2px 20px rgba(0,0,0,.25);
+  }
+  .nav-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 68px;
+    padding-inline: 24px;
+    max-width: var(--max-w);
+    margin-inline: auto;
+  }
+  .nav-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--white);
+    letter-spacing: .08em;
+    text-transform: uppercase;
+  }
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 36px;
+  }
+  .nav-links a {
+    color: rgba(255,255,255,.82);
+    font-size: 14px;
+    font-weight: 500;
+    transition: color var(--transition);
+  }
+  .nav-links a:hover { color: var(--white); }
+  .nav-cta { margin-left: 20px; }
+  .hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    padding: 6px;
+    background: none;
+    border: none;
+    cursor: pointer;
+  }
+  .hamburger span {
+    display: block;
+    width: 24px;
+    height: 2px;
+    background: var(--white);
+    border-radius: 2px;
+    transition: all 0.3s ease;
+  }
+  .mobile-menu {
+    display: none;
+    flex-direction: column;
+    gap: 0;
+    background: var(--navy);
+    padding: 0 24px 20px;
+  }
+  .mobile-menu.open { display: flex; }
+  .mobile-menu a {
+    color: rgba(255,255,255,.85);
+    font-size: 16px;
+    font-weight: 500;
+    padding: 14px 0;
+    border-bottom: 1px solid rgba(255,255,255,.08);
+    transition: color var(--transition);
+  }
+  .mobile-menu a:last-child { border-bottom: none; }
+  .mobile-menu a:hover { color: var(--amber); }
+  .mobile-menu .btn-primary { margin-top: 16px; justify-content: center; }
+  @media (max-width: 768px) {
+    .nav-links, .nav-cta { display: none; }
+    .hamburger { display: flex; }
+  }
+
+  /* Blog Hero */
+  .blog-hero {
+    background: var(--navy);
+    padding: 120px 0 60px;
+    position: relative;
+  }
+  .blog-hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 800px 400px at 50% 50%, rgba(232,168,48,.05) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .blog-hero-title {
+    font-size: clamp(30px, 4vw, 48px);
+    font-weight: 700;
+    color: var(--white);
+    line-height: 1.15;
+    letter-spacing: -.3px;
+    margin-bottom: 16px;
+    position: relative;
+  }
+  .blog-hero-sub {
+    font-size: 18px;
+    color: rgba(255,255,255,.65);
+    line-height: 1.65;
+    max-width: 600px;
+    position: relative;
+  }
+
+  /* Tag pills */
+  .tag-pill {
+    display: inline-block;
+    background: var(--amber);
+    color: var(--navy);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.8px;
+    padding: 3px 9px;
+    border-radius: 4px;
+    text-transform: uppercase;
+  }
+
+  /* Post listing */
+  .blog-listing {
+    background: var(--gray-50);
+    padding: 60px 0 100px;
+    min-height: 400px;
+  }
+  .post-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 24px;
+  }
+  .post-card {
+    background: var(--white);
+    border: 1px solid var(--gray-100);
+    border-radius: 12px;
+    padding: 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition);
+    text-decoration: none;
+    color: inherit;
+  }
+  .post-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-md);
+    border-color: rgba(232,168,48,.25);
+  }
+  .post-card-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .post-card-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--navy);
+    line-height: 1.3;
+    margin: 0;
+  }
+  .post-card-excerpt {
+    font-size: 14px;
+    color: var(--gray-600);
+    line-height: 1.65;
+    flex: 1;
+  }
+  .post-card-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding-top: 12px;
+    border-top: 1px solid var(--gray-100);
+    font-size: 13px;
+    color: var(--gray-600);
+  }
+  .post-card-author {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .author-dot {
+    width: 28px;
+    height: 28px;
+    background: var(--navy);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--white);
+    font-size: 13px;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+  .post-card-date-time {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .meta-dot { color: var(--gray-400); }
+  .post-card-read {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--amber);
+  }
+
+  /* Footer */
+  footer {
+    background: var(--navy-dark);
+    padding: 60px 0 0;
+  }
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 48px;
+    padding-bottom: 48px;
+  }
+  .footer-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--white);
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  .footer-tagline { font-size: 14px; color: rgba(255,255,255,.4); line-height: 1.5; }
+  .footer-nav-title, .footer-contact-title {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--amber);
+    margin-bottom: 18px;
+  }
+  .footer-nav-links { display: flex; flex-direction: column; gap: 10px; }
+  .footer-nav-links a { font-size: 14px; color: rgba(255,255,255,.55); transition: color var(--transition); }
+  .footer-nav-links a:hover { color: var(--white); }
+  .footer-contact-text { font-size: 14px; color: rgba(255,255,255,.55); line-height: 1.7; }
+  .footer-bottom {
+    border-top: 1px solid rgba(255,255,255,.07);
+    padding: 20px 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .footer-copyright { font-size: 13px; color: rgba(255,255,255,.28); }
+  .footer-legal { display: flex; gap: 24px; }
+  .footer-legal a { font-size: 13px; color: rgba(255,255,255,.28); transition: color var(--transition); }
+  .footer-legal a:hover { color: rgba(255,255,255,.55); }
+  @media (max-width: 768px) {
+    .footer-grid { grid-template-columns: 1fr; gap: 36px; }
+    .footer-bottom { flex-direction: column; align-items: flex-start; }
+    .post-grid { grid-template-columns: 1fr; }
+  }
+</style>
+
+<script>
+  const btn = document.getElementById('hamburgerBtn');
+  const menu = document.getElementById('mobileMenu');
+  if (btn && menu) {
+    btn.addEventListener('click', () => {
+      const open = menu.classList.toggle('open');
+      btn.setAttribute('aria-expanded', String(open));
+      const spans = btn.querySelectorAll('span');
+      if (open) {
+        (spans[0] as HTMLElement).style.transform = 'translateY(7px) rotate(45deg)';
+        (spans[1] as HTMLElement).style.opacity = '0';
+        (spans[2] as HTMLElement).style.transform = 'translateY(-7px) rotate(-45deg)';
+      } else {
+        spans.forEach(s => { (s as HTMLElement).style.transform = ''; (s as HTMLElement).style.opacity = ''; });
+      }
+    });
+  }
+</script>
